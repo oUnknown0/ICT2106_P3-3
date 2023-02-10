@@ -1,0 +1,9 @@
+@startuml
+class UserRepositoryIn {
+    + UserRepositoryIn(context:DBContext)
+    + <<virtual>> <<async>> Register(username:string, password:string) : Task<User>
+}
+class "GenericRepositoryIn`1"<T> {
+}
+"GenericRepositoryIn`1" "<User>" <|-- UserRepositoryIn
+@enduml

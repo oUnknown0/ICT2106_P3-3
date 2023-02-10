@@ -1,0 +1,14 @@
+@startuml
+class Donations {
+    + Donations()
+    + DonationsId : string <<get>> <<set>>
+    + DonationType : string <<get>> <<set>>
+    + DonationAmount : string <<get>> <<set>>
+    + DonationContstraint : string <<get>> <<set>>
+    + DonorId : string <<get>> <<set>>
+    + ProjectId : string <<get>> <<set>>
+}
+Donations --> "DonationDate" DateTime
+Donations --> "donor" Donor
+Donations --> "project" Project
+@enduml

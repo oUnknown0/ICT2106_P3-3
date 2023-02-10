@@ -1,0 +1,8 @@
+@startuml
+interface IRepositoryReference {
+    BeginTransaction() : void
+    Commit() : void
+    Rollback() : void
+    Dispose() : void
+}
+@enduml

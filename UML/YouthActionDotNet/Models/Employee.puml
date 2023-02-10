@@ -1,0 +1,13 @@
+@startuml
+class Employee {
+    + EmployeeNationalId : string <<get>> <<set>>
+    + BankName : string <<get>> <<set>>
+    + BankAccountNumber : string <<get>> <<set>>
+    + PAYE : string <<get>> <<set>>
+    + DateJoined : string <<get>> <<set>>
+    + EmployeeType : string <<get>> <<set>>
+    + EmployeeRole : string <<get>> <<set>>
+}
+User <|-- Employee
+Employee --> "User" User
+@enduml

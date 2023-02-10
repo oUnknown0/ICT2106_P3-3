@@ -1,0 +1,15 @@
+@startuml
+class UserController {
+    + UserController(context:DBContext)
+    + <<async>> GetUser(id:int) : Task<ActionResult<User>>
+    + <<async>> LoginUser(user:User) : Task<ActionResult<String>>
+    + <<async>> GetAllUsers() : Task<ActionResult<String>>
+    + <<async>> PutUser(id:string, user:User) : Task<ActionResult<String>>
+    + <<async>> PostUser(user:User) : Task<ActionResult<String>>
+    + <<async>> DeleteUser(id:int) : Task<IActionResult>
+    - UserExists(id:string) : bool
+    + GetUserSettings() : string
+}
+ControllerBase <|-- UserController
+UserController --> "_context" DBContext
+@enduml

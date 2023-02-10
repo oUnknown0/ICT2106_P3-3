@@ -1,0 +1,26 @@
+@startuml
+class ProjectControl {
+    + ProjectControl(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:Project) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Project) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Project) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Project) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Project>" <|-- ProjectControl
+ProjectControl --> "ProjectRepositoryIn<Project>" "GenericRepositoryIn`1"
+ProjectControl --> "ProjectRepositoryOut<Project>" "GenericRepositoryOut`1"
+ProjectControl --> "ServiceCenterRepositoryIn<ServiceCenter>" "GenericRepositoryIn`1"
+ProjectControl --> "ServiceCenterRepositoryOut<ServiceCenter>" "GenericRepositoryOut`1"
+ProjectControl o-> "settings" JsonSerializerSettings
+@enduml

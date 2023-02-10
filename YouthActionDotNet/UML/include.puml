@@ -1,0 +1,701 @@
+@startuml
+
+left to right direction
+
+class Program {
+    + {static} Main(args:string[]) : void
+    + {static} CreateHostBuilder(args:string[]) : IHostBuilder
+}
+class Startup {
+    + Startup(configuration:IConfiguration)
+    + ConfigureServices(services:IServiceCollection) : void
+    + Configure(app:IApplicationBuilder, env:IWebHostEnvironment) : void
+}
+Startup --> "Configuration" IConfiguration
+class DonationsControl {
+    + DonationsControl(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Create(template:Donations) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Donations) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + Settings() : string
+    + <<async>> Update(id:string, template:Donations) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Donations) : Task<ActionResult<string>>
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Donations>" <|-- DonationsControl
+DonationsControl --> "DonationsRepositoryIn<Donations>" "GenericRepositoryIn`1"
+DonationsControl --> "DonationsRepositoryOut<Donations>" "GenericRepositoryOut`1"
+DonationsControl o-> "settings" JsonSerializerSettings
+class DonorControl {
+    + DonorControl(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(donor:Donor) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, donor:Donor) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Donor) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(donor:Donor) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Donor>" <|-- DonorControl
+DonorControl --> "DonorRepositoryIn<Donor>" "GenericRepositoryIn`1"
+DonorControl --> "DonorRepositoryOut<Donor>" "GenericRepositoryOut`1"
+DonorControl o-> "settings" JsonSerializerSettings
+class EmployeeControl {
+    + EmployeeControl(context:DBContext)
+    + <<async>> Create(template:Employee) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Employee) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Employee) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Employee) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+    + Exists(id:string) : bool
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Employee>" <|-- EmployeeControl
+EmployeeControl --> "EmployeeRepositoryIn<Employee>" "GenericRepositoryIn`1"
+EmployeeControl --> "EmployeeRepositoryOut<Employee>" "GenericRepositoryOut`1"
+EmployeeControl --> "PermissionsRepositoryOut" PermissionsRepositoryOut
+class ExpenseControl {
+    + ExpenseControl(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Create(template:Expense) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Expense) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Expense) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Expense) : Task<ActionResult<String>>
+    + Exists(id:string) : bool
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Expense>" <|-- ExpenseControl
+ExpenseControl --> "EmployeeRepository<Employee>" "GenericRepositoryOut`1"
+ExpenseControl --> "ExpenseRepositoryOut<Expense>" "GenericRepositoryOut`1"
+ExpenseControl --> "ExpenseRepositoryIn<Expense>" "GenericRepositoryIn`1"
+ExpenseControl --> "ProjectRepository<Project>" "GenericRepositoryOut`1"
+ExpenseControl o-> "settings" JsonSerializerSettings
+class FileControl {
+    + FileControl(context:DBContext)
+    + <<async>> UploadFile(fileName:string, filePath:string) : Task<string>
+    + <<async>> GetFile(id:string) : Task<string>
+}
+FileControl --> "FileRepositoryIn" FileRepositoryIn
+FileControl --> "FileRepositoryOut" FileRepositoryOut
+class PermissionsControl {
+    + PermissionsControl(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Create(template:Permissions) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Permissions) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> GetByRole(role:string) : Task<ActionResult<string>>
+    + Settings() : string
+    + <<async>> Update(id:string, template:Permissions) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Permissions) : Task<ActionResult<string>>
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Permissions>" <|-- PermissionsControl
+PermissionsControl --> "PermissionRepositoryIn" PermissionsRepositoryIn
+PermissionsControl --> "PermissionRepositoryOut" PermissionsRepositoryOut
+class ProjectControl {
+    + ProjectControl(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:Project) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Project) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Project) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Project) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Project>" <|-- ProjectControl
+ProjectControl --> "ProjectRepositoryIn<Project>" "GenericRepositoryIn`1"
+ProjectControl --> "ProjectRepositoryOut<Project>" "GenericRepositoryOut`1"
+ProjectControl --> "ServiceCenterRepositoryIn<ServiceCenter>" "GenericRepositoryIn`1"
+ProjectControl --> "ServiceCenterRepositoryOut<ServiceCenter>" "GenericRepositoryOut`1"
+ProjectControl o-> "settings" JsonSerializerSettings
+class ServiceCenterControl {
+    + ServiceCenterControl(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:ServiceCenter) : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<ServiceCenter>" <|-- ServiceCenterControl
+ServiceCenterControl --> "ServiceCenterRepositoryIn<ServiceCenter>" "GenericRepositoryIn`1"
+ServiceCenterControl --> "ServiceCenterRepositoryOut<ServiceCenter>" "GenericRepositoryOut`1"
+ServiceCenterControl --> "UserRepositoryIn<User>" "GenericRepositoryIn`1"
+ServiceCenterControl --> "UserRepositoryOut<User>" "GenericRepositoryOut`1"
+ServiceCenterControl o-> "settings" JsonSerializerSettings
+class UserControl {
+    + UserControl(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> LoginUser(user:User) : Task<ActionResult<String>>
+    + <<async>> Create(template:User) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:User) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:User) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:User) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<User>" <|-- UserControl
+UserControl --> "UserRepositoryIn" UserRepositoryIn
+UserControl --> "UserRepositoryOut" UserRepositoryOut
+class VolunteerControl {
+    + VolunteerControl(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Volunteer>" <|-- VolunteerControl
+VolunteerControl --> "VolunteerRepositoryIn<Volunteer>" "GenericRepositoryIn`1"
+VolunteerControl --> "VolunteerRepositoryOut<Volunteer>" "GenericRepositoryOut`1"
+VolunteerControl --> "EmployeeRepositoryIn<Employee>" "GenericRepositoryIn`1"
+VolunteerControl --> "EmployeeRepositoryOut<Employee>" "GenericRepositoryOut`1"
+VolunteerControl o-> "settings" JsonSerializerSettings
+class VolunteerWorkControl {
+    + VolunteerWorkControl(context:DBContext)
+    + <<async>> Create(template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:VolunteerWork) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<VolunteerWork>" <|-- VolunteerWorkControl
+VolunteerWorkControl --> "VolunteerWorkRepositoryIn<VolunteerWork>" "GenericRepositoryIn`1"
+VolunteerWorkControl --> "VolunteerWorkRepositoryOut<VolunteerWork>" "GenericRepositoryOut`1"
+VolunteerWorkControl --> "VolunteerRepositoryIn<Volunteer>" "GenericRepositoryIn`1"
+VolunteerWorkControl --> "VolunteerRepositoryOut<Volunteer>" "GenericRepositoryOut`1"
+VolunteerWorkControl --> "EmployeeRepositoryIn<Employee>" "GenericRepositoryIn`1"
+VolunteerWorkControl --> "EmployeeRepositoryOut<Employee>" "GenericRepositoryOut`1"
+VolunteerWorkControl --> "ProjectRepositoryIn<Project>" "GenericRepositoryIn`1"
+VolunteerWorkControl --> "ProjectRepositoryOut<Project>" "GenericRepositoryOut`1"
+VolunteerWorkControl o-> "settings" JsonSerializerSettings
+class DonationsController {
+    + DonationsController(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Create(template:Donations) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Donations) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + Settings() : string
+    + <<async>> Update(id:string, template:Donations) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Donations) : Task<ActionResult<string>>
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- DonationsController
+"IUserInterfaceCRUD`1" "<Donations>" <|-- DonationsController
+DonationsController --> "donationsControl" DonationsControl
+class DonorController {
+    + DonorController(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(donor:Donor) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, donor:Donor) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Donor) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(donor:Donor) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- DonorController
+"IUserInterfaceCRUD`1" "<Donor>" <|-- DonorController
+DonorController --> "donorControl" DonorControl
+DonorController o-> "settings" JsonSerializerSettings
+class EmployeeController {
+    + EmployeeController(context:DBContext)
+    + <<async>> Create(template:Employee) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Employee) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Employee) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Employee) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+    + Exists(id:string) : bool
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- EmployeeController
+"IUserInterfaceCRUD`1" "<Employee>" <|-- EmployeeController
+EmployeeController --> "employeeControl" EmployeeControl
+class ExpenseController {
+    + ExpenseController(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Create(template:Expense) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Expense) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Expense) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Expense) : Task<ActionResult<String>>
+    + Exists(id:string) : bool
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- ExpenseController
+"IUserInterfaceCRUD`1" "<Expense>" <|-- ExpenseController
+ExpenseController --> "expenseControl" ExpenseControl
+ExpenseController o-> "settings" JsonSerializerSettings
+class FileController {
+    + FileController(context:DBContext)
+    + <<async>> UploadFile() : Task<string>
+    + <<async>> GetFile(id:string) : Task<string>
+}
+ControllerBase <|-- FileController
+FileController --> "fileControl" FileControl
+class PermissionsController {
+    + PermissionsController(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Create(template:Permissions) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Permissions) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> GetByRole(role:string) : Task<ActionResult<string>>
+    + Settings() : string
+    + <<async>> Update(id:string, template:Permissions) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Permissions) : Task<ActionResult<string>>
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- PermissionsController
+"IUserInterfaceCRUD`1" "<Permissions>" <|-- PermissionsController
+PermissionsController --> "permissionsControl" PermissionsControl
+class ProjectController {
+    + ProjectController(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:Project) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Project) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Project) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Project) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- ProjectController
+"IUserInterfaceCRUD`1" "<Project>" <|-- ProjectController
+ProjectController --> "projectControl" ProjectControl
+ProjectController o-> "settings" JsonSerializerSettings
+class ServiceCenterController {
+    + ServiceCenterController(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:ServiceCenter) : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- ServiceCenterController
+"IUserInterfaceCRUD`1" "<ServiceCenter>" <|-- ServiceCenterController
+ServiceCenterController --> "serviceCenterControl" ServiceCenterControl
+ServiceCenterController o-> "settings" JsonSerializerSettings
+class UserController {
+    + UserController(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> LoginUser(user:User) : Task<ActionResult<String>>
+    + <<async>> Create(template:User) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:User) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:User) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:User) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- UserController
+"IUserInterfaceCRUD`1" "<User>" <|-- UserController
+UserController --> "userControl" UserControl
+class VolunteerController {
+    + VolunteerController(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- VolunteerController
+"IUserInterfaceCRUD`1" "<Volunteer>" <|-- VolunteerController
+VolunteerController --> "volunteerControl" VolunteerControl
+VolunteerController o-> "settings" JsonSerializerSettings
+class VolunteerWorkController {
+    + VolunteerWorkController(context:DBContext)
+    + <<async>> Create(template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:VolunteerWork) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- VolunteerWorkController
+"IUserInterfaceCRUD`1" "<VolunteerWork>" <|-- VolunteerWorkController
+VolunteerWorkController --> "volunteerWorkControl" VolunteerWorkControl
+VolunteerWorkController o-> "settings" JsonSerializerSettings
+class FileRepositoryIn {
+    + FileRepositoryIn(context:DBContext)
+    + <<async>> UploadFile(fileName:string, fileUrl:string) : Task<string>
+}
+class "GenericRepositoryIn`1"<T> {
+}
+"GenericRepositoryIn`1" "<Models.File>" <|-- FileRepositoryIn
+class FileRepositoryOut {
+    + FileRepositoryOut(context:DBContext)
+    + <<async>> getFilePath(fileId:string) : Task<Models.File>
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"GenericRepositoryOut`1" "<Models.File>" <|-- FileRepositoryOut
+class "GenericRepositoryIn`1"<TEntity> {
+    + GenericRepositoryIn(context:DbContext)
+    + <<virtual>> Insert(entity:TEntity) : bool
+    + <<virtual>> Update(entityToUpdate:TEntity) : bool
+    + <<virtual>> Delete(id:object) : bool
+    + <<virtual>> Delete(entityToDelete:TEntity) : bool
+    + <<virtual>> <<async>> InsertAsync(entity:TEntity) : Task<bool>
+    + <<virtual>> <<async>> UpdateAsync(entityToUpdate:TEntity) : Task<bool>
+    + <<virtual>> <<async>> DeleteAsync(id:object) : Task<bool>
+    + <<virtual>> <<async>> DeleteAsync(entityToDelete:TEntity) : Task<bool>
+}
+class "DbSet`1"<T> {
+}
+"GenericRepositoryIn`1" --> "dbSet<TEntity>" "DbSet`1"
+"GenericRepositoryIn`1" --> "context" DbContext
+class "GenericRepositoryOut`1"<TEntity> {
+    + GenericRepositoryOut(context:DbContext)
+    + <<virtual>> GetAll(filter:Expression<Func<TEntity, bool>>, orderBy:Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>, includeProperties:string) : IEnumerable<TEntity>
+    + <<virtual>> GetByID(id:object) : TEntity
+    + <<virtual>> <<async>> GetAllAsync(filter:Expression<Func<TEntity, bool>>, orderBy:Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>, includeProperties:string) : Task<IEnumerable<TEntity>>
+    + <<virtual>> <<async>> GetByIDAsync(id:object) : Task<TEntity>
+}
+class "DbSet`1"<T> {
+}
+"GenericRepositoryOut`1" --> "dbSet<TEntity>" "DbSet`1"
+"GenericRepositoryOut`1" --> "context" DbContext
+class PermissionsRepositoryIn {
+    + PermissionsRepositoryIn(context:DBContext)
+}
+class "GenericRepositoryIn`1"<T> {
+}
+"GenericRepositoryIn`1" "<Permissions>" <|-- PermissionsRepositoryIn
+class PermissionsRepositoryOut {
+    + PermissionsRepositoryOut(context:DBContext)
+    + GetByRole(role:string) : Task<Permissions>
+    + GetNormalRoles() : Task<List<Permissions>>
+    + GetEmployeeRoles() : List<Permissions>
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"GenericRepositoryOut`1" "<Permissions>" <|-- PermissionsRepositoryOut
+class UserRepositoryOut {
+    + UserRepositoryOut(context:DBContext)
+    + <<virtual>> <<async>> Login(username:string, password:string) : Task<User>
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"GenericRepositoryOut`1" "<User>" <|-- UserRepositoryOut
+class UserRepositoryIn {
+    + UserRepositoryIn(context:DBContext)
+    + <<virtual>> <<async>> Register(username:string, password:string) : Task<User>
+}
+class "GenericRepositoryIn`1"<T> {
+}
+"GenericRepositoryIn`1" "<User>" <|-- UserRepositoryIn
+class DBContext {
+    + Permissions : object <<get>> <<internal set>>
+    + DBContext(options:DbContextOptions<DBContext>)
+    + DBContext()
+    # <<override>> OnModelCreating(modelBuilder:ModelBuilder) : void
+}
+DbContext <|-- DBContext
+interface "IUserInterfaceCRUD`1"<T> {
+    Create(template:T) : Task<ActionResult<string>>
+    Get(id:string) : Task<ActionResult<string>>
+    Update(id:string, template:T) : Task<ActionResult<string>>
+    UpdateAndFetchAll(id:string, template:T) : Task<ActionResult<string>>
+    Delete(id:string) : Task<ActionResult<string>>
+    Delete(template:T) : Task<ActionResult<string>>
+    All() : Task<ActionResult<string>>
+    Settings() : string
+    Exists(id:string) : bool
+}
+class Donations {
+    + Donations()
+    + DonationsId : string <<get>> <<set>>
+    + DonationType : string <<get>> <<set>>
+    + DonationAmount : string <<get>> <<set>>
+    + DonationContstraint : string <<get>> <<set>>
+    + DonorId : string <<get>> <<set>>
+    + ProjectId : string <<get>> <<set>>
+}
+Donations --> "DonationDate" DateTime
+Donations --> "donor" Donor
+Donations --> "project" Project
+class Donor {
+    + donorName : string <<get>> <<set>>
+    + donorType : string <<get>> <<set>>
+}
+User <|-- Donor
+Donor --> "User" User
+class Employee {
+    + EmployeeNationalId : string <<get>> <<set>>
+    + BankName : string <<get>> <<set>>
+    + BankAccountNumber : string <<get>> <<set>>
+    + PAYE : string <<get>> <<set>>
+    + DateJoined : string <<get>> <<set>>
+    + EmployeeType : string <<get>> <<set>>
+    + EmployeeRole : string <<get>> <<set>>
+}
+User <|-- Employee
+Employee --> "User" User
+class Expense {
+    + Expense()
+    + ExpenseId : string <<get>> <<set>>
+    + ExpenseAmount : string <<get>> <<set>>
+    + ExpenseDesc : string <<get>> <<set>>
+    + ProjectId : string <<get>> <<set>>
+    + ExpenseReceipt : string <<get>> <<set>>
+    + Status : string <<get>> <<set>>
+    + ApprovalId : string <<get>> <<set>>
+}
+Expense --> "DateOfExpense" DateTime
+Expense --> "DateOfSubmission" DateTime
+Expense --> "DateOfReimbursement" DateTime
+Expense --> "user" User
+Expense --> "project" Project
+Expense --> "ExpenseReceiptFile" File
+class File {
+    + File()
+    + FileId : string <<get>> <<set>>
+    + FileName : string <<get>> <<set>>
+    + FileUrl : string <<get>> <<set>>
+    + FileMIME : string <<get>> <<set>>
+    + FileExt : string <<get>> <<set>>
+}
+class Permissions {
+    + Permissions()
+    + Id : string <<get>> <<set>>
+    + Role : string <<get>> <<set>>
+    + Permission : string <<get>> <<set>>
+}
+class Permission {
+    + Module : string <<get>> <<set>>
+    + Create : bool <<get>> <<set>>
+    + Read : bool <<get>> <<set>>
+    + Update : bool <<get>> <<set>>
+    + Delete : bool <<get>> <<set>>
+}
+class Project {
+    + Project()
+    + ProjectId : string <<get>> <<set>>
+    + ProjectName : string <<get>> <<set>>
+    + ProjectDescription : string <<get>> <<set>>
+    + ProjectStartDate : string <<get>> <<set>>
+    + ProjectEndDate : string <<get>> <<set>>
+    + ProjectCompletionDate : string <<get>> <<set>>
+    + ProjectStatus : string <<get>> <<set>>
+    + ProjectType : string <<get>> <<set>>
+    + ProjectBudget : double <<get>> <<set>>
+    + ServiceCenterId : string <<get>> <<set>>
+}
+Project --> "ServiceCenter" ServiceCenter
+class ServiceCenter {
+    + ServiceCenter()
+    + ServiceCenterId : string <<get>> <<set>>
+    + ServiceCenterName : string <<get>> <<set>>
+    + ServiceCenterAddress : string <<get>> <<set>>
+    + RegionalDirectorId : string <<get>> <<set>>
+    + <<virtual>> RegionalDirectorName : string <<get>> <<set>>
+}
+ServiceCenter --> "RegionalDirector" Employee
+class Settings {
+}
+class UserSettings {
+    + UserSettings()
+}
+class InputType {
+    + type : string <<get>> <<set>>
+    + displayLabel : string <<get>> <<set>>
+    + editable : bool <<get>> <<set>>
+    + primaryKey : bool <<get>> <<set>>
+    + toolTip : string <<get>> <<set>>
+}
+class "DropdownInputType`1"<T> {
+}
+class DropdownInputType {
+}
+class "DropdownOption`1"<T> {
+    + value : T <<get>> <<set>>
+    + label : string <<get>> <<set>>
+}
+class DropdownOption {
+    + value : string <<get>> <<set>>
+    + label : string <<get>> <<set>>
+}
+class ColumnHeader {
+    + displayHeader : string <<get>> <<set>>
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+Settings --> "ColumnSettings<string,ColumnHeader>" "Dictionary`2"
+Settings --> "FieldSettings<string,InputType>" "Dictionary`2"
+Settings <|-- UserSettings
+InputType <|-- "DropdownInputType`1"
+"DropdownInputType`1" --> "options<DropdownOption<T>>" "List`1"
+InputType <|-- DropdownInputType
+DropdownInputType --> "options<DropdownOption>" "List`1"
+class User {
+    + User()
+    + UserId : string <<get>> <<set>>
+    + username : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+    + Role : string <<get>> <<set>>
+    + phoneNumber : string <<get>> <<set>>
+    + address : string <<get>> <<set>>
+}
+class Volunteer {
+    + VolunteerNationalId : string <<get>> <<set>>
+    + VolunteerDateJoined : string <<get>> <<set>>
+    + VolunteerDateBirth : string <<get>> <<set>>
+    + Qualifications : string <<get>> <<set>>
+    + CriminalHistory : string <<get>> <<set>>
+    + CriminalHistoryDesc : string <<get>> <<set>>
+    + ApprovalStatus : string <<get>> <<set>>
+    + ApprovedBy : string <<get>> <<set>>
+}
+User <|-- Volunteer
+Volunteer --> "User" User
+class VolunteerWork {
+    VolunteerWork()
+    + VolunteerWorkId : string <<get>> <<set>>
+    + ShiftStart : string <<get>> <<set>>
+    + ShiftEnd : string <<get>> <<set>>
+    + SupervisingEmployee : string <<get>> <<set>>
+    + VolunteerId : string <<get>> <<set>>
+    + projectId : string <<get>> <<set>>
+}
+VolunteerWork --> "employee" Employee
+VolunteerWork --> "volunteer" Volunteer
+VolunteerWork --> "project" Project
+class Utils <<static>> {
+    + {static} hashpassword(password:string) : string
+    + {static} GetFileExt(fileName:string) : string
+    + {static} GetMime(fileExt:string) : string
+}
+interface "IGenericDataRepository`1"<T> {
+    GetAll(filter:Expression<Func<T, bool>>, orderBy:Func<IQueryable<T>, IOrderedQueryable<T>>, includeProperties:string) : IEnumerable<T>
+    GetByID(id:object) : T
+    Insert(obj:T) : bool
+    Update(obj:T) : bool
+    Delete(id:object) : bool
+    Delete(obj:T) : bool
+    Save() : void
+}
+interface IRepositoryReference {
+    BeginTransaction() : void
+    Commit() : void
+    Rollback() : void
+    Dispose() : void
+}
+@enduml

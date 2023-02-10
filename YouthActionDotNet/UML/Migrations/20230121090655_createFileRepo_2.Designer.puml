@@ -1,0 +1,5 @@
+@startuml
+class createFileRepo2 <<partial>> {
+    # <<override>> BuildTargetModel(modelBuilder:ModelBuilder) : void
+}
+@enduml

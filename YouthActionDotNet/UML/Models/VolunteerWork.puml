@@ -1,0 +1,14 @@
+@startuml
+class VolunteerWork {
+    VolunteerWork()
+    + VolunteerWorkId : string <<get>> <<set>>
+    + ShiftStart : string <<get>> <<set>>
+    + ShiftEnd : string <<get>> <<set>>
+    + SupervisingEmployee : string <<get>> <<set>>
+    + VolunteerId : string <<get>> <<set>>
+    + projectId : string <<get>> <<set>>
+}
+VolunteerWork --> "employee" Employee
+VolunteerWork --> "volunteer" Volunteer
+VolunteerWork --> "project" Project
+@enduml

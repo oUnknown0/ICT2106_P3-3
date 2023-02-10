@@ -1,0 +1,349 @@
+@import "main.scss";
+
+.staff-extended{
+    margin:15px 0px ;
+    display:flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.manager-landing-header{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    grid-template-areas: 
+    "top-three requests"
+    "bottom-three requests"
+    "over-forty over-forty";
+    gap: 15px;
+    margin:0px 0px 15px 0px;
+    .manager-top-three{
+        &.top{
+            grid-area: top-three;
+        }
+        &.bottom{
+            grid-area: bottom-three;
+        }
+        .staff-item{
+            &:nth-child(odd){
+                background-color: rgba($primary, 0.1);
+            }
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            padding:7.5px;
+            .staff-item-name{
+                font-size: 1.2rem;
+                color:$primary;
+            }
+
+            .staff-item-hours{
+                font-size: 0.8rem;
+                color:$chimericBlack;
+                font-weight: bold;
+
+            }
+        }
+    }
+
+    .manager-over-forty{
+        grid-area: over-forty;
+
+        .header{
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px 15px;
+            height:46px;
+            
+            .requestCount{
+                color:$primary;
+                background-color: white;
+                border-radius: 10px;
+                padding:7.5px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .requests {
+        
+        grid-area: requests;
+
+        @media screen and (max-width: $sm) {
+            .rq{
+                display:none;
+            }
+        }
+
+        .header{
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px 15px;
+            height:46px;
+            .requestCount{
+                color:$primary;
+                background-color: white;
+                border-radius: 10px;
+                padding:7.5px;
+                font-weight: bold;
+            }
+        }
+
+        .requests-tabs{
+            display:grid;
+            grid-template-columns: repeat(4, minmax(0,1fr));
+            text-align: center;
+            position:relative;
+
+            .tab{
+                
+                padding:15px 7.5px;
+                position:relative;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                transition: all 0.2s ease-in-out;
+                &:hover{
+                    cursor:pointer;
+                    background-color: rgba($primary, 0.1);
+                }
+                &.active{
+                    &:after{
+                        content: "";
+                        position: absolute;
+                        width: 100%;
+                        height: 2px;
+                        bottom:0px;
+                        left:0px;
+                        background-color: $primary;
+                    }
+                }
+            }
+        }
+
+        .step>div{
+            width: 100%;
+        }
+
+        .request-item{
+            display:flex;
+            flex-direction: column;
+            gap:5px;
+            padding: 7.5px 15px;
+            transition: 0.3s ease-in-out;
+
+            &:nth-child(odd){
+                background-color: rgba($primary, 0.1);
+            }
+            .request-item-name{
+                font-weight: bold;
+                color:$primary
+            }
+
+            .request-first-row{
+                display:flex;
+
+                .request-item-name{
+                    flex-grow: 1;
+                    text-overflow: ellipsis;
+                }
+
+                .request-item-status{
+                    min-width: 50px;
+                }
+            }
+
+            .request-item-status{
+                font-weight: bold;
+
+            }
+
+            &:hover{
+                background-color: rgba($primary, 0.2);
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+
+.jobCreation-toggle{
+    margin:10px;
+    background-color: $primary;
+    border-radius: 10px;
+    border:none;
+    color:white;
+    font-weight: bold;
+    position: relative;
+    padding:15px;
+    .jobCreationForm{
+        display:none;
+        cursor: default;
+    }
+
+    .jobCreation-toggle-label{
+        font-weight: bold;
+    }
+
+    &:focus,&:focus-within{
+        .jobCreationForm{
+            padding:15px;
+            color:black;
+            background-color: white;
+            position: relative;
+            display:grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            grid-template-rows: repeat(1, minmax(0,1fr));
+            align-items: stretch;
+            border-radius: 10px;
+            gap: 15px;
+            margin-top: 15px;
+
+            @media screen and (max-width: $md) {
+                grid-template-columns: repeat(1, minmax(0,1fr));
+                grid-template-rows: repeat(1, minmax(0,1fr));
+            }
+
+            .jobCreationForm-fields{
+                color:black;
+                background-color: white;
+                position: relative;
+                display:grid;
+                grid-template-columns: minmax(0,1fr);
+                gap:10px;
+                text-align: left;
+            }
+
+            .jobCreationForm-staffSchedule{
+                display:flex;
+                padding-right: 10px;
+                align-items: flex-start;
+                justify-content: center;
+
+                .card-bg{
+                    width: 100%;
+                }
+
+                .staffSchedule-tooltip{
+                    font-weight: bold;
+                    color:$primary;
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        @media screen and (max-width: $md) {
+            .jobCreationForm{
+                display:grid;
+                grid-template-columns: minmax(0,1fr);
+
+                .jobCreationForm-staffSchedule{
+                    width: 100%;
+                    max-width: 100%;
+                    min-width: 100%;
+                }
+            }
+        }
+    }
+}
+.eligibleStaff{
+    
+    .eligibleStaff-label{
+        font-weight: bold;
+        color:black;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+    }
+
+    .eligibleStaffList{
+        display:flex;
+        flex-wrap: wrap;
+        gap:15px;
+
+        transition: 0.3s ease-in-out;
+
+        @for $i from 3 through 100 {
+            .eligibleStaff-Chip:nth-child(#{$i}){
+                animation : fadeIn 0.3s ease-in-out both;
+                animation-delay: 25ms * ($i - 3);
+
+            }
+
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0px);
+                }
+            }
+        }
+
+        .eligibleStaff-radio{
+            display:none;
+        }
+
+        .eligibleStaff-Chip{
+            display:flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: 10px;
+            background-color: rgba($primary, 0.1);
+            font-weight: bold;
+            color:$chimericBlack;
+            transition: 0.3s ease-in-out;
+            &:hover{
+                cursor: pointer !important;
+                background-color: rgba($primary, 0.2);
+            }
+
+            &.active{
+                background-color: rgba($primary,1);
+                color:white;
+
+                span{
+                    color:white;
+                }
+            }
+        }
+
+        .eligibleStaff-chip-label{
+            display:flex;
+            flex-wrap: nowrap;
+            gap:10px;
+            padding:10px;
+            span{
+                white-space: nowrap;
+
+                &.label-name{
+
+                }
+
+                &.label-hours{
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .eligibleStaff-view-more{
+            display:flex;
+            align-items: center;
+            gap: 5px;
+            padding:10px;
+            border-radius: 10px;
+            color: $primary;
+            transition: 0.3s ease-in-out;
+
+            &:hover{
+                cursor: pointer;
+                background-color: rgba($primary, 0.1);
+            }
+
+            span,i{
+                font-weight: bold;
+            }
+        }
+    }
+}

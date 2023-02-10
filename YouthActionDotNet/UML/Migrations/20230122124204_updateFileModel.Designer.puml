@@ -1,0 +1,5 @@
+@startuml
+class updateFileModel <<partial>> {
+    # <<override>> BuildTargetModel(modelBuilder:ModelBuilder) : void
+}
+@enduml

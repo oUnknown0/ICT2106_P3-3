@@ -1,0 +1,30 @@
+@startuml
+class VolunteerWorkControl {
+    + VolunteerWorkControl(context:DBContext)
+    + <<async>> Create(template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:VolunteerWork) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:VolunteerWork) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<VolunteerWork>" <|-- VolunteerWorkControl
+VolunteerWorkControl --> "VolunteerWorkRepositoryIn<VolunteerWork>" "GenericRepositoryIn`1"
+VolunteerWorkControl --> "VolunteerWorkRepositoryOut<VolunteerWork>" "GenericRepositoryOut`1"
+VolunteerWorkControl --> "VolunteerRepositoryIn<Volunteer>" "GenericRepositoryIn`1"
+VolunteerWorkControl --> "VolunteerRepositoryOut<Volunteer>" "GenericRepositoryOut`1"
+VolunteerWorkControl --> "EmployeeRepositoryIn<Employee>" "GenericRepositoryIn`1"
+VolunteerWorkControl --> "EmployeeRepositoryOut<Employee>" "GenericRepositoryOut`1"
+VolunteerWorkControl --> "ProjectRepositoryIn<Project>" "GenericRepositoryIn`1"
+VolunteerWorkControl --> "ProjectRepositoryOut<Project>" "GenericRepositoryOut`1"
+VolunteerWorkControl o-> "settings" JsonSerializerSettings
+@enduml

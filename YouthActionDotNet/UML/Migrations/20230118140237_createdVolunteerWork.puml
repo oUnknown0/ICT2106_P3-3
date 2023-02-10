@@ -1,0 +1,7 @@
+@startuml
+class createdVolunteerWork <<partial>> {
+    # <<override>> Up(migrationBuilder:MigrationBuilder) : void
+    # <<override>> Down(migrationBuilder:MigrationBuilder) : void
+}
+Migration <|-- createdVolunteerWork
+@enduml

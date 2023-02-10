@@ -1,0 +1,11 @@
+@startuml
+class PermissionsRepositoryOut {
+    + PermissionsRepositoryOut(context:DBContext)
+    + GetByRole(role:string) : Task<Permissions>
+    + GetNormalRoles() : Task<List<Permissions>>
+    + GetEmployeeRoles() : List<Permissions>
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"GenericRepositoryOut`1" "<Permissions>" <|-- PermissionsRepositoryOut
+@enduml

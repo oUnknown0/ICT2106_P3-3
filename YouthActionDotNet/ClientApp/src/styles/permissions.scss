@@ -1,0 +1,111 @@
+@import "main.scss";
+
+.permission-module-container{
+    gap:15px;
+    
+    .permission-module{
+        font-size: $large-font;
+        font-weight: bold;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    
+    .permission-toggle-group{
+        gap:7.5px;
+    }
+}
+
+
+.permission-toggle-label{
+    font-size: $medium-font;
+}
+
+.module-update-container{
+    display:grid;
+    grid-template-columns: 1fr 3fr;
+
+    @media screen and (max-width: $md) {
+        grid-template-columns: 1fr;
+    }
+    .module-update-header{
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .module-update-tabs{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .module-update-tab{
+        background-color: $primary;
+        &>div{
+            
+            margin: 15px;
+            color:white;
+            transition: 0.3s ease-in-out;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        &.active{
+            background-color: $nav-active;
+            &>div{
+                
+                font-weight: bold;
+            }
+        }
+    }
+
+    .module{
+        padding:15px;
+        width: 100%;
+
+        .module-form{
+            display:flex;
+            flex-direction: column;
+            gap:15px;
+        }
+    }
+
+    .existing-modules{
+        display:flex;
+        flex-direction: column;
+
+        .existing-modules-header{
+            font-weight: 600;
+            position:relative;
+            padding:15px;
+            &:after{
+                content: "";
+                position: absolute;
+                left:0px;
+                bottom:0px;
+                width: 100%;
+                height: 2px;
+                background-color: $primary;
+
+                transform: scaleX(0);
+                animation: 0.3s ease-in-out 0.3s forwards scale;
+                transform-origin: left;
+            }
+
+            @keyframes scale {
+                100% {
+                    transform: scaleX(1);
+                }
+            }
+        }
+        
+        .modules{
+            flex-wrap: wrap;
+            gap:7.5px;
+            .module-chip{
+                border-radius: 25px;
+                background: linear-gradient($primary, $nav-active);
+                padding:10px;
+                color:white;
+            }
+        }
+    }
+}

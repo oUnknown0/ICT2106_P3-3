@@ -1,0 +1,13 @@
+@startuml
+class "GenericRepositoryOut`1"<TEntity> {
+    + GenericRepositoryOut(context:DbContext)
+    + <<virtual>> GetAll(filter:Expression<Func<TEntity, bool>>, orderBy:Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>, includeProperties:string) : IEnumerable<TEntity>
+    + <<virtual>> GetByID(id:object) : TEntity
+    + <<virtual>> <<async>> GetAllAsync(filter:Expression<Func<TEntity, bool>>, orderBy:Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>, includeProperties:string) : Task<IEnumerable<TEntity>>
+    + <<virtual>> <<async>> GetByIDAsync(id:object) : Task<TEntity>
+}
+class "DbSet`1"<T> {
+}
+"GenericRepositoryOut`1" --> "dbSet<TEntity>" "DbSet`1"
+"GenericRepositoryOut`1" --> "context" DbContext
+@enduml

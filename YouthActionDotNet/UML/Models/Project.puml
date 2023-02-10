@@ -1,0 +1,16 @@
+@startuml
+class Project {
+    + Project()
+    + ProjectId : string <<get>> <<set>>
+    + ProjectName : string <<get>> <<set>>
+    + ProjectDescription : string <<get>> <<set>>
+    + ProjectStartDate : string <<get>> <<set>>
+    + ProjectEndDate : string <<get>> <<set>>
+    + ProjectCompletionDate : string <<get>> <<set>>
+    + ProjectStatus : string <<get>> <<set>>
+    + ProjectType : string <<get>> <<set>>
+    + ProjectBudget : double <<get>> <<set>>
+    + ServiceCenterId : string <<get>> <<set>>
+}
+Project --> "ServiceCenter" ServiceCenter
+@enduml

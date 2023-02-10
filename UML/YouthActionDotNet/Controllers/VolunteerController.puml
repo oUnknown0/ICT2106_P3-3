@@ -1,0 +1,15 @@
+@startuml
+class VolunteerController {
+    + VolunteerController(context:DBContext)
+    + <<async>> GetVolunteer(id:string) : Task<ActionResult<Volunteer>>
+    + <<async>> GetAllVolunteers() : Task<ActionResult<String>>
+    + <<async>> PutVolunteer(id:string, volunteer:Volunteer) : Task<IActionResult>
+    + <<async>> PostVolunteer(volunteer:Volunteer) : Task<ActionResult<String>>
+    + <<async>> DeleteVolunteer(id:int) : Task<IActionResult>
+    - VolunteerExists(id:string) : bool
+    + GetVolunteerSettings() : string
+}
+ControllerBase <|-- VolunteerController
+VolunteerController --> "_context" DBContext
+VolunteerController o-> "settings" JsonSerializerSettings
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class "GenericRepositoryIn`1"<TEntity> {
+    + GenericRepositoryIn(context:DbContext)
+    + <<virtual>> Insert(entity:TEntity) : bool
+    + <<virtual>> Update(entityToUpdate:TEntity) : bool
+    + <<virtual>> Delete(id:object) : bool
+    + <<virtual>> Delete(entityToDelete:TEntity) : bool
+    + <<virtual>> <<async>> InsertAsync(entity:TEntity) : Task<bool>
+    + <<virtual>> <<async>> UpdateAsync(entityToUpdate:TEntity) : Task<bool>
+    + <<virtual>> <<async>> DeleteAsync(id:object) : Task<bool>
+    + <<virtual>> <<async>> DeleteAsync(entityToDelete:TEntity) : Task<bool>
+}
+class "DbSet`1"<T> {
+}
+"GenericRepositoryIn`1" --> "dbSet<TEntity>" "DbSet`1"
+"GenericRepositoryIn`1" --> "context" DbContext
+@enduml

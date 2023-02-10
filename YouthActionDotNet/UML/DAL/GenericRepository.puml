@@ -1,0 +1,26 @@
+@startuml
+class "GenericRepository`1"<TEntity> {
+    + GenericRepository(context:DBContext)
+    + <<virtual>> GetAll(filter:Expression<Func<TEntity, bool>>, orderBy:Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>, includeProperties:string) : IEnumerable<TEntity>
+    + <<virtual>> GetByID(id:object) : TEntity
+    + <<virtual>> Insert(entity:TEntity) : bool
+    + <<virtual>> Update(entityToUpdate:TEntity) : bool
+    + <<virtual>> Delete(id:object) : bool
+    + <<virtual>> Delete(entityToDelete:TEntity) : bool
+    + <<virtual>> <<async>> GetAllAsync(filter:Expression<Func<TEntity, bool>>, orderBy:Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>, includeProperties:string) : Task<IEnumerable<TEntity>>
+    + <<virtual>> <<async>> GetByIDAsync(id:object) : Task<TEntity>
+    + <<virtual>> <<async>> InsertAsync(entity:TEntity) : Task<bool>
+    + <<virtual>> <<async>> UpdateAsync(entityToUpdate:TEntity) : Task<bool>
+    + <<virtual>> <<async>> DeleteAsync(id:object) : Task<bool>
+    + <<virtual>> <<async>> DeleteAsync(entityToDelete:TEntity) : Task<bool>
+    + Save() : void
+    + <<async>> SaveAsync() : Task
+}
+class "IGenericDataRepository`1"<T> {
+}
+class "DbSet`1"<T> {
+}
+"IGenericDataRepository`1" "<TEntity>" <|-- "GenericRepository`1"
+"GenericRepository`1" --> "context" DBContext
+"GenericRepository`1" --> "dbSet<TEntity>" "DbSet`1"
+@enduml

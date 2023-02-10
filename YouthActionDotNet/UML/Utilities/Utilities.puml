@@ -1,0 +1,7 @@
+@startuml
+class Utils <<static>> {
+    + {static} hashpassword(password:string) : string
+    + {static} GetFileExt(fileName:string) : string
+    + {static} GetMime(fileExt:string) : string
+}
+@enduml

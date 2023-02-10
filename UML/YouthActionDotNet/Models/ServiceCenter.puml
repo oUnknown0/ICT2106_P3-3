@@ -1,0 +1,9 @@
+@startuml
+class ServiceCenter {
+    + id : int <<get>> <<set>>
+    + ServiceCenterName : string <<get>> <<set>>
+    + ServiceCenterAddress : string <<get>> <<set>>
+    + RegionalDirectorId : string <<get>> <<set>>
+}
+ServiceCenter --> "RegionalDirector" Employee
+@enduml

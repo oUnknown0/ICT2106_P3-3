@@ -1,0 +1,11 @@
+@startuml
+interface "IGenericDataRepository`1"<T> {
+    GetAll(filter:Expression<Func<T, bool>>, orderBy:Func<IQueryable<T>, IOrderedQueryable<T>>, includeProperties:string) : IEnumerable<T>
+    GetByID(id:object) : T
+    Insert(obj:T) : bool
+    Update(obj:T) : bool
+    Delete(id:object) : bool
+    Delete(obj:T) : bool
+    Save() : void
+}
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+class EmployeeController {
+    + EmployeeController(context:DBContext)
+    + <<async>> Create(template:Employee) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Employee) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Employee) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Employee) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+    + Exists(id:string) : bool
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- EmployeeController
+"IUserInterfaceCRUD`1" "<Employee>" <|-- EmployeeController
+EmployeeController --> "employeeControl" EmployeeControl
+@enduml

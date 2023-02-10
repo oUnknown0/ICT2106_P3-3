@@ -1,0 +1,7 @@
+@startuml
+class Pages__ViewImports {
+    + <<async>> <<override>> ExecuteAsync() : global::System.Threading.Tasks.Task
+}
+class "RazorPage`1"<T> {
+}
+@enduml

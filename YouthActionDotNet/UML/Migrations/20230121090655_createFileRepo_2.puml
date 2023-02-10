@@ -1,0 +1,7 @@
+@startuml
+class createFileRepo2 <<partial>> {
+    # <<override>> Up(migrationBuilder:MigrationBuilder) : void
+    # <<override>> Down(migrationBuilder:MigrationBuilder) : void
+}
+Migration <|-- createFileRepo2
+@enduml

@@ -1,0 +1,183 @@
+@startuml
+
+left to right direction
+
+class Program {
+    + {static} Main(args:string[]) : void
+    + {static} CreateHostBuilder(args:string[]) : IHostBuilder
+}
+class Startup {
+    + Startup(configuration:IConfiguration)
+    + ConfigureServices(services:IServiceCollection) : void
+    + Configure(app:IApplicationBuilder, env:IWebHostEnvironment) : void
+}
+Startup --> "Configuration" IConfiguration
+class EmployeeController {
+    + EmployeeController(context:DBContext)
+    + <<async>> GetEmployee(id:int) : Task<ActionResult<Employee>>
+    + <<async>> GetAllEmployees() : Task<ActionResult<String>>
+    + <<async>> PutEmployee(id:string, employee:Employee) : Task<IActionResult>
+    + <<async>> PostUser(employee:Employee) : Task<ActionResult<String>>
+    + <<async>> DeleteEmployee(id:int) : Task<IActionResult>
+    - EmployeeExists(id:string) : bool
+    + GetEmployeeSettings() : string
+}
+ControllerBase <|-- EmployeeController
+EmployeeController --> "_context" DBContext
+EmployeeController o-> "settings" JsonSerializerSettings
+class ServiceCenterController {
+    + ServiceCenterController(context:DBContext)
+    + <<async>> GetServiceCenters() : Task<ActionResult<IEnumerable<ServiceCenter>>>
+    + <<async>> GetServiceCenter(id:int) : Task<ActionResult<ServiceCenter>>
+    + <<async>> GetAllServiceCenters() : Task<ActionResult<String>>
+    + <<async>> PostCenter(serviceCenter:ServiceCenter) : Task<ActionResult<String>>
+    + <<async>> PutServiceCenter(id:int, serviceCenter:ServiceCenter) : Task<IActionResult>
+    + <<async>> PostServiceCenter(serviceCenter:ServiceCenter) : Task<ActionResult<ServiceCenter>>
+    + <<async>> DeleteServiceCenter(id:int) : Task<IActionResult>
+    + getServiceCenterSettings() : string
+    - ServiceCenterExists(id:int) : bool
+}
+ControllerBase <|-- ServiceCenterController
+ServiceCenterController --> "_context" DBContext
+class UserController {
+    + UserController(context:DBContext)
+    + <<async>> GetUser(id:int) : Task<ActionResult<User>>
+    + <<async>> LoginUser(user:User) : Task<ActionResult<String>>
+    + <<async>> GetAllUsers() : Task<ActionResult<String>>
+    + <<async>> PutUser(id:string, user:User) : Task<ActionResult<String>>
+    + <<async>> PostUser(user:User) : Task<ActionResult<String>>
+    + <<async>> DeleteUser(id:int) : Task<IActionResult>
+    - UserExists(id:string) : bool
+    + GetUserSettings() : string
+}
+ControllerBase <|-- UserController
+UserController --> "_context" DBContext
+class VolunteerController {
+    + VolunteerController(context:DBContext)
+    + <<async>> GetVolunteer(id:string) : Task<ActionResult<Volunteer>>
+    + <<async>> GetAllVolunteers() : Task<ActionResult<String>>
+    + <<async>> PutVolunteer(id:string, volunteer:Volunteer) : Task<IActionResult>
+    + <<async>> PostVolunteer(volunteer:Volunteer) : Task<ActionResult<String>>
+    + <<async>> DeleteVolunteer(id:int) : Task<IActionResult>
+    - VolunteerExists(id:string) : bool
+    + GetVolunteerSettings() : string
+}
+ControllerBase <|-- VolunteerController
+VolunteerController --> "_context" DBContext
+VolunteerController o-> "settings" JsonSerializerSettings
+class DBContext {
+    + DBContext(options:DbContextOptions<DBContext>)
+    # <<override>> OnModelCreating(modelBuilder:ModelBuilder) : void
+}
+class "DbSet`1"<T> {
+}
+DbContext <|-- DBContext
+DBContext --> "Users<User>" "DbSet`1"
+DBContext --> "ServiceCenters<ServiceCenter>" "DbSet`1"
+DBContext --> "Employee<Employee>" "DbSet`1"
+DBContext --> "Volunteer<YouthActionDotNet.Models.Volunteer>" "DbSet`1"
+class restructurev1 <<partial>> {
+    # <<override>> Up(migrationBuilder:MigrationBuilder) : void
+    # <<override>> Down(migrationBuilder:MigrationBuilder) : void
+}
+Migration <|-- restructurev1
+class restructurev1 <<partial>> {
+    # <<override>> BuildTargetModel(modelBuilder:ModelBuilder) : void
+}
+class DBContextModelSnapshot <<partial>> {
+    # <<override>> BuildModel(modelBuilder:ModelBuilder) : void
+}
+ModelSnapshot <|-- DBContextModelSnapshot
+class Employee {
+    + EmployeeNationalId : string <<get>> <<set>>
+    + BankName : string <<get>> <<set>>
+    + BankAccountNumber : string <<get>> <<set>>
+    + PAYE : string <<get>> <<set>>
+    + DateJoined : string <<get>> <<set>>
+    + EmployeeType : string <<get>> <<set>>
+    + EmployeeRole : string <<get>> <<set>>
+}
+User <|-- Employee
+Employee --> "User" User
+class ServiceCenter {
+    + id : int <<get>> <<set>>
+    + ServiceCenterName : string <<get>> <<set>>
+    + ServiceCenterAddress : string <<get>> <<set>>
+    + RegionalDirectorId : string <<get>> <<set>>
+}
+ServiceCenter --> "RegionalDirector" Employee
+class Settings {
+}
+class InputType {
+    + type : string <<get>> <<set>>
+    + displayLabel : string <<get>> <<set>>
+    + editable : bool <<get>> <<set>>
+    + primaryKey : bool <<get>> <<set>>
+    + toolTip : string <<get>> <<set>>
+}
+class DropdownInputType {
+}
+class DropdownInputTypeInt {
+}
+class DropdownOption {
+    + value : string <<get>> <<set>>
+    + label : string <<get>> <<set>>
+}
+class DropdownOptionsInt {
+    + value : int <<get>> <<set>>
+    + label : string <<get>> <<set>>
+}
+class ColumnHeader {
+    + displayHeader : string <<get>> <<set>>
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+Settings --> "ColumnSettings<string,ColumnHeader>" "Dictionary`2"
+Settings --> "FieldSettings<string,InputType>" "Dictionary`2"
+InputType <|-- DropdownInputType
+DropdownInputType --> "options<DropdownOption>" "List`1"
+InputType <|-- DropdownInputTypeInt
+DropdownInputTypeInt --> "options<DropdownOptionsInt>" "List`1"
+class User {
+    + UserId : string <<get>> <<set>>
+    + username : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+    + Role : string <<get>> <<set>>
+    + phoneNumber : string <<get>> <<set>>
+    + address : string <<get>> <<set>>
+}
+class Volunteer {
+    + VolunteerNationalId : string <<get>> <<set>>
+    + VolunteerDateJoined : string <<get>> <<set>>
+    + VolunteerDateBirth : string <<get>> <<set>>
+    + Qualifications : string <<get>> <<set>>
+    + CriminalHistory : string <<get>> <<set>>
+    + CriminalHistoryDesc : string <<get>> <<set>>
+    + ApprovalStatus : string <<get>> <<set>>
+    + ApprovedBy : string <<get>> <<set>>
+}
+User <|-- Volunteer
+Volunteer --> "User" User
+class ErrorModel {
+    + ErrorModel(logger:ILogger<ErrorModel>)
+    + RequestId : string <<get>> <<set>>
+    + ShowRequestId : bool <<get>>
+    + OnGet() : void
+}
+class "ILogger`1"<T> {
+}
+PageModel <|-- ErrorModel
+ErrorModel --> "_logger<ErrorModel>" "ILogger`1"
+class Pages_Error {
+    + <<async>> <<override>> ExecuteAsync() : global::System.Threading.Tasks.Task
+}
+Pages_Error --> "Model" ErrorModel
+class Pages__ViewImports {
+    + <<async>> <<override>> ExecuteAsync() : global::System.Threading.Tasks.Task
+}
+class "RazorPage`1"<T> {
+}
+@enduml

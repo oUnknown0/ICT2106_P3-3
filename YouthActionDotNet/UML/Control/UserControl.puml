@@ -1,0 +1,20 @@
+@startuml
+class UserControl {
+    + UserControl(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> LoginUser(user:User) : Task<ActionResult<String>>
+    + <<async>> Create(template:User) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:User) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:User) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:User) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<User>" <|-- UserControl
+UserControl --> "UserRepositoryIn" UserRepositoryIn
+UserControl --> "UserRepositoryOut" UserRepositoryOut
+@enduml

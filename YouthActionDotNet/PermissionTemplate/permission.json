@@ -1,0 +1,79 @@
+[
+  {
+    "Module": "Employees",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Volunteers",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Donors",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Users",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Permissions",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Service Center",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Volunteer Work",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Donations",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Expenses",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Project",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  },
+  {
+    "Module": "Sample",
+    "Create": true,
+    "Read": true,
+    "Update": true,
+    "Delete": true
+  }
+]

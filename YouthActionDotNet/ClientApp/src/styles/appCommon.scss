@@ -1,0 +1,218 @@
+@import "./main.scss";
+
+.app-page{
+    width:100%;
+    max-width: 900px;
+    min-width: 500px;
+    height:100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    flex-grow: 1;
+    position:relative;
+    @media screen and (max-width:500px) {
+        min-width: 100%;
+    }
+    display:flex;
+    flex-direction: column;
+    
+    &.no-pad{
+        padding: 0;
+    }
+}
+
+.app-button{
+    isolation: isolate;
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border:none;
+    appearance: none;
+    outline: none;
+    flex-wrap: nowrap;
+    background-color: transparent;
+    position: relative;
+    text-decoration: none;
+    color:black;
+    i{
+        font-size: 3em;
+        width: 100%;
+        aspect-ratio: 1/1;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        background:radial-gradient(
+            circle at 0% 0%,
+            $primary 0%,
+            $secondary 100%,
+        );
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+        z-index: 1;
+        transition: 0.3s ease-in-out;
+        color:white;
+        border-radius: calc($borderRadius * 2);
+    }
+    .app-button-label{
+        font-size: 0.8em;
+        white-space: nowrap;
+        font-weight: bold;
+        display:flex;
+        align-items: flex-end;
+        justify-content: center;
+        z-index: 0;
+        transition: 0.3s ease-in-out;
+        margin-top: 10px;
+    }
+
+}
+
+.barcodeContainer{
+    width: 80%;
+    height: 80%;
+    max-width: 300px;
+    max-height: 200px;
+}
+
+.qr-internal{
+    display:grid;
+    grid-template-columns: repeat(1, minmax(0,1fr));
+    row-gap: 15px;
+}
+
+.manual-internal{
+    display:grid;
+    grid-template-columns: repeat(1, minmax(0,1fr));
+    row-gap: 15px;
+}
+
+.loading-graphic{
+    width: 100vw;
+    max-width: 900px;
+    height: 100vh;
+    background: repeating-radial-gradient(
+        circle at 50%, 
+        rgba($primary,0.2),
+        rgba($primary,0.2) 25%, 
+        rgba($primary, 0.4) 25.1%, 
+        rgba($primary,0.4) 50%,
+        rgba($primary,0.6) 50.1%,
+        rgba($primary,0.6) 75%,
+        rgba($primary,0.8) 75.1%,
+        rgba($primary,0.8) 100%
+        );
+    background-size: 0%;
+    background-position: 50%;
+    content:"Loading";
+    animation: loading 5s ease-in-out infinite forwards;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:15px; 
+
+    @keyframes loading{
+        0%{
+            content:"Loading.";
+            background-size:100%;
+            opacity: 1;
+        }
+        50%{
+            content:"Loading..";
+            background-size: 150%;
+            opacity: 1;
+        }
+        100%{
+            content:"Loading..";
+            background-size:100%;
+            opacity: 1;
+        }
+    }
+}
+
+.page-transition{
+    height:calc(100vh - 56px);
+    width:100vw;
+    position:absolute;
+    top:56px;
+    left:0;
+    z-index: 100;
+    background-color: $primary;
+    animation: scaleout 1s ease-in-out forwards;
+    transform-origin: bottom;
+    pointer-events:none;
+    @keyframes scaleout{
+        0%{
+            opacity: 1;
+        }
+        100%{
+            opacity: 0;
+        }
+    }
+}
+
+#video-container{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    #qr-video{
+        width:80%;
+        max-width: 400px;
+        object-fit:cover;
+        aspect-ratio: 1/1;
+        transition:opacity 0.3s ease-in-out;
+    }   
+
+    .cam-options{
+        display:flex;
+        flex-direction: column;
+    }
+}
+
+.card-bg{
+    border-radius: $borderRadius;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    display:flex;
+    flex-direction: column;
+    .header{
+        background-color: $primary;
+        color:white;
+        padding:15px;
+        font-size: 1.25em;
+        font-weight: bold;
+        min-height: 46px;
+    }
+
+    .body{
+        padding:15px;
+    }
+
+    &.no-pad{
+        .body{
+            padding:0;
+        }
+    }
+}
+
+
+.event{
+    &.unavailable{
+        background-color: $exclude !important;
+        color:white;
+        &:hover{
+            background-color: $primary !important;
+        }
+    }
+}
+
+.access-denied-panel{
+    .header{
+        font-size: 5.2em;
+    }
+    .body{
+        font-size: 2em;
+    }
+}

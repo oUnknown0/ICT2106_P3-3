@@ -1,0 +1,13 @@
+@startuml
+class DBContext {
+    + DBContext(options:DbContextOptions<DBContext>)
+    # <<override>> OnModelCreating(modelBuilder:ModelBuilder) : void
+}
+class "DbSet`1"<T> {
+}
+DbContext <|-- DBContext
+DBContext --> "Users<User>" "DbSet`1"
+DBContext --> "ServiceCenters<ServiceCenter>" "DbSet`1"
+DBContext --> "Employee<Employee>" "DbSet`1"
+DBContext --> "Volunteer<YouthActionDotNet.Models.Volunteer>" "DbSet`1"
+@enduml

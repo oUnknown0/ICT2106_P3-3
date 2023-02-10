@@ -1,0 +1,9 @@
+@startuml
+class FileRepositoryOut {
+    + FileRepositoryOut(context:DBContext)
+    + <<async>> getFilePath(fileId:string) : Task<Models.File>
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"GenericRepositoryOut`1" "<Models.File>" <|-- FileRepositoryOut
+@enduml

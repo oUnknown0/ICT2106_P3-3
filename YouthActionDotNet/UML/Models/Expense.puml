@@ -1,0 +1,18 @@
+@startuml
+class Expense {
+    + Expense()
+    + ExpenseId : string <<get>> <<set>>
+    + ExpenseAmount : string <<get>> <<set>>
+    + ExpenseDesc : string <<get>> <<set>>
+    + ProjectId : string <<get>> <<set>>
+    + ExpenseReceipt : string <<get>> <<set>>
+    + Status : string <<get>> <<set>>
+    + ApprovalId : string <<get>> <<set>>
+}
+Expense --> "DateOfExpense" DateTime
+Expense --> "DateOfSubmission" DateTime
+Expense --> "DateOfReimbursement" DateTime
+Expense --> "user" User
+Expense --> "project" Project
+Expense --> "ExpenseReceiptFile" File
+@enduml

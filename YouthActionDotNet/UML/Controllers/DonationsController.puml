@@ -1,0 +1,19 @@
+@startuml
+class DonationsController {
+    + DonationsController(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Create(template:Donations) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Donations) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + Settings() : string
+    + <<async>> Update(id:string, template:Donations) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Donations) : Task<ActionResult<string>>
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- DonationsController
+"IUserInterfaceCRUD`1" "<Donations>" <|-- DonationsController
+DonationsController --> "donationsControl" DonationsControl
+@enduml

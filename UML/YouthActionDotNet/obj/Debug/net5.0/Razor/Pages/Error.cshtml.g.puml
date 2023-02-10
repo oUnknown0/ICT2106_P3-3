@@ -1,0 +1,6 @@
+@startuml
+class Pages_Error {
+    + <<async>> <<override>> ExecuteAsync() : global::System.Threading.Tasks.Task
+}
+Pages_Error --> "Model" ErrorModel
+@enduml

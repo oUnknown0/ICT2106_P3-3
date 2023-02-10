@@ -1,0 +1,14 @@
+@startuml
+class Volunteer {
+    + VolunteerNationalId : string <<get>> <<set>>
+    + VolunteerDateJoined : string <<get>> <<set>>
+    + VolunteerDateBirth : string <<get>> <<set>>
+    + Qualifications : string <<get>> <<set>>
+    + CriminalHistory : string <<get>> <<set>>
+    + CriminalHistoryDesc : string <<get>> <<set>>
+    + ApprovalStatus : string <<get>> <<set>>
+    + ApprovedBy : string <<get>> <<set>>
+}
+User <|-- Volunteer
+Volunteer --> "User" User
+@enduml

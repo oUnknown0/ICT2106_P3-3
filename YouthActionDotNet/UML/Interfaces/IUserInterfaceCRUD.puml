@@ -1,0 +1,13 @@
+@startuml
+interface "IUserInterfaceCRUD`1"<T> {
+    Create(template:T) : Task<ActionResult<string>>
+    Get(id:string) : Task<ActionResult<string>>
+    Update(id:string, template:T) : Task<ActionResult<string>>
+    UpdateAndFetchAll(id:string, template:T) : Task<ActionResult<string>>
+    Delete(id:string) : Task<ActionResult<string>>
+    Delete(template:T) : Task<ActionResult<string>>
+    All() : Task<ActionResult<string>>
+    Settings() : string
+    Exists(id:string) : bool
+}
+@enduml

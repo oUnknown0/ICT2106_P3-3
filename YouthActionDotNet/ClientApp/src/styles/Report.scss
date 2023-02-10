@@ -1,0 +1,27 @@
+$color-primary: #d60c8c;
+$color-body-background: #eee;
+$color-item-background: #fff;
+$color-border: #ebeff6;
+$color-label: #999;
+$color-number: #525252;
+
+.report-dashboard-label {
+  font-weight: bold;
+}
+
+.report-dashboard-item {
+  background-color: $color-item-background;
+  border-right: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
+  flex-grow: 1;
+  flex-basis: 100%;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  &:last-child {
+    border-right: none;
+  }
+  @media screen and (min-width: 40em) {
+    flex-basis: 20%;
+  }
+}

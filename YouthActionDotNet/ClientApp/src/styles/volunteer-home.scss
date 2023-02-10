@@ -1,0 +1,110 @@
+@import "main.scss";
+
+.volunteer-work-list-container{
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
+    display:flex;
+    flex-direction: column;
+    padding: 0;
+    
+
+    .list-item{
+        display:grid;
+        grid-template-columns: repeat(var(--Columns), minmax(0,1fr));
+        padding:15px;
+        gap:15px;
+        transition: background-color 0.2s ease-in-out;
+        cursor: pointer;
+
+        .header-cell{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        &.header{
+            background-color: $primary;
+            color:white;
+        }
+
+        &.active{
+            background-color: $nav-active;
+            color:white;
+        }
+    }
+
+    .content{
+        height:0;
+        overflow:hidden;
+        &.show{
+            height:auto;
+        }
+    }
+}
+
+.volunteer-work-content{
+    padding:15px;
+    align-items: flex-start;
+    .card-bg{
+        .body{
+            display:flex;
+            flex-direction: column;
+            gap:15px;
+
+            .work-card-info{
+                display:flex;
+                flex-direction: column;
+                gap:7.5px;
+                .work-card-title{
+                    text-transform: uppercase;
+                    font-weight: bold;
+                }
+                .work-card-line{
+                    display:flex;
+                    flex-direction: row;
+                    gap:15px;
+                    align-items: center;
+                    .work-card-label{
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+
+    .work-info{
+        .work-info-header{
+            font-size: 1.25em;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding:0px 0px 15px 0px;
+        }
+
+        .work-info-body{
+        }
+    }
+}
+
+
+.volunteer-pending{
+    .content{
+        display:flex;
+        
+        .pending-message{
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            gap:15px;
+            padding:15px;
+            .pending-message-icon{
+                font-size: 3em;
+                color: $multiple
+            }
+            .pending-message-text{
+                font-size: 1.25em;
+                font-weight: bold;
+                line-height: 2em;
+            }
+        }
+    }
+}

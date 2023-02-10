@@ -1,0 +1,15 @@
+@startuml
+class Permissions {
+    + Permissions()
+    + Id : string <<get>> <<set>>
+    + Role : string <<get>> <<set>>
+    + Permission : string <<get>> <<set>>
+}
+class Permission {
+    + Module : string <<get>> <<set>>
+    + Create : bool <<get>> <<set>>
+    + Read : bool <<get>> <<set>>
+    + Update : bool <<get>> <<set>>
+    + Delete : bool <<get>> <<set>>
+}
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+class PermissionsControl {
+    + PermissionsControl(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Create(template:Permissions) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Permissions) : Task<ActionResult<string>>
+    + Exists(id:string) : bool
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> GetByRole(role:string) : Task<ActionResult<string>>
+    + Settings() : string
+    + <<async>> Update(id:string, template:Permissions) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Permissions) : Task<ActionResult<string>>
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Permissions>" <|-- PermissionsControl
+PermissionsControl --> "PermissionRepositoryIn" PermissionsRepositoryIn
+PermissionsControl --> "PermissionRepositoryOut" PermissionsRepositoryOut
+@enduml

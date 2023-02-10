@@ -1,0 +1,10 @@
+@startuml
+class FileRepository {
+    + FileRepository(context:DBContext)
+    + <<async>> UploadFile(fileName:string, fileUrl:string) : Task<string>
+    + <<async>> getFilePath(fileId:string) : Task<Models.File>
+}
+class "GenericRepository`1"<T> {
+}
+"GenericRepository`1" "<Models.File>" <|-- FileRepository
+@enduml

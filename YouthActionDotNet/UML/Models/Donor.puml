@@ -1,0 +1,8 @@
+@startuml
+class Donor {
+    + donorName : string <<get>> <<set>>
+    + donorType : string <<get>> <<set>>
+}
+User <|-- Donor
+Donor --> "User" User
+@enduml

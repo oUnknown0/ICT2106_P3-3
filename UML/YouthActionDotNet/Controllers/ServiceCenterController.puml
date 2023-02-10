@@ -1,0 +1,16 @@
+@startuml
+class ServiceCenterController {
+    + ServiceCenterController(context:DBContext)
+    + <<async>> GetServiceCenters() : Task<ActionResult<IEnumerable<ServiceCenter>>>
+    + <<async>> GetServiceCenter(id:int) : Task<ActionResult<ServiceCenter>>
+    + <<async>> GetAllServiceCenters() : Task<ActionResult<String>>
+    + <<async>> PostCenter(serviceCenter:ServiceCenter) : Task<ActionResult<String>>
+    + <<async>> PutServiceCenter(id:int, serviceCenter:ServiceCenter) : Task<IActionResult>
+    + <<async>> PostServiceCenter(serviceCenter:ServiceCenter) : Task<ActionResult<ServiceCenter>>
+    + <<async>> DeleteServiceCenter(id:int) : Task<IActionResult>
+    + getServiceCenterSettings() : string
+    - ServiceCenterExists(id:int) : bool
+}
+ControllerBase <|-- ServiceCenterController
+ServiceCenterController --> "_context" DBContext
+@enduml

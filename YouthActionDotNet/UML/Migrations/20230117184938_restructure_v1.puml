@@ -1,0 +1,7 @@
+@startuml
+class restructurev1 <<partial>> {
+    # <<override>> Up(migrationBuilder:MigrationBuilder) : void
+    # <<override>> Down(migrationBuilder:MigrationBuilder) : void
+}
+Migration <|-- restructurev1
+@enduml

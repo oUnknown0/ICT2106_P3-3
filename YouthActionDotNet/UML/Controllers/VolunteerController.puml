@@ -1,0 +1,20 @@
+@startuml
+class VolunteerController {
+    + VolunteerController(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- VolunteerController
+"IUserInterfaceCRUD`1" "<Volunteer>" <|-- VolunteerController
+VolunteerController --> "volunteerControl" VolunteerControl
+VolunteerController o-> "settings" JsonSerializerSettings
+@enduml

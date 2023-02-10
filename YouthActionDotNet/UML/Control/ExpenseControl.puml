@@ -1,0 +1,26 @@
+@startuml
+class ExpenseControl {
+    + ExpenseControl(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Create(template:Expense) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Expense) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Expense) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Expense) : Task<ActionResult<String>>
+    + Exists(id:string) : bool
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Expense>" <|-- ExpenseControl
+ExpenseControl --> "EmployeeRepository<Employee>" "GenericRepositoryOut`1"
+ExpenseControl --> "ExpenseRepositoryOut<Expense>" "GenericRepositoryOut`1"
+ExpenseControl --> "ExpenseRepositoryIn<Expense>" "GenericRepositoryIn`1"
+ExpenseControl --> "ProjectRepository<Project>" "GenericRepositoryOut`1"
+ExpenseControl o-> "settings" JsonSerializerSettings
+@enduml

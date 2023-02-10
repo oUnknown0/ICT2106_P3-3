@@ -1,0 +1,65 @@
+{
+  "name": "youthactiondotnet",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/react": "^18.0.26",
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.5.1",
+    "merge": "^2.1.1",
+    "mime-types": "^2.1.35",
+    "moment": "^2.29.4",
+    "oidc-client": "^1.9.0",
+    "qr-scanner": "^1.4.2",
+    "react": "^18.2.0",
+    "react-csv": "^2.2.2",
+    "react-dom": "^18.1.0",
+    "react-file-icon": "^1.3.0",
+    "react-qr-code": "^2.0.11",
+    "react-router-bootstrap": "^0.25.0",
+    "react-router-dom": "^6.3.0",
+    "reactstrap": "^9.1.5",
+    "readable-stream": "^4.3.0",
+    "resolve-url-loader": "^5.0.0",
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "ajv": "^6.9.1",
+    "cross-env": "^5.2.0",
+    "eslint": "^8.0.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "nan": "^2.14.1",
+    "react-scripts": "^5.0.1",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
+    "typescript": "^3.7.5",
+    "webpack": "^5.75.0"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "scripts": {
+    "start": "rimraf ./build && react-scripts start",
+    "build": "react-scripts build",
+    "test": "cross-env CI=true react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src/"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "resolutions": {
+    "url-parse": ">=1.5.0",
+    "lodash": ">=4.17.21"
+  }
+}

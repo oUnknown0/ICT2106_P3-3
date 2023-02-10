@@ -1,0 +1,20 @@
+@startuml
+class ServiceCenterController {
+    + ServiceCenterController(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:ServiceCenter) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:ServiceCenter) : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- ServiceCenterController
+"IUserInterfaceCRUD`1" "<ServiceCenter>" <|-- ServiceCenterController
+ServiceCenterController --> "serviceCenterControl" ServiceCenterControl
+ServiceCenterController o-> "settings" JsonSerializerSettings
+@enduml

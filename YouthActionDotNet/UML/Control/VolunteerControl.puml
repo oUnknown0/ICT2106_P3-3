@@ -1,0 +1,26 @@
+@startuml
+class VolunteerControl {
+    + VolunteerControl(context:DBContext)
+    + Exists(id:string) : bool
+    + <<async>> Create(template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Volunteer) : Task<ActionResult<string>>
+    + <<async>> All() : Task<ActionResult<string>>
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+class "GenericRepositoryIn`1"<T> {
+}
+class "GenericRepositoryOut`1"<T> {
+}
+"IUserInterfaceCRUD`1" "<Volunteer>" <|-- VolunteerControl
+VolunteerControl --> "VolunteerRepositoryIn<Volunteer>" "GenericRepositoryIn`1"
+VolunteerControl --> "VolunteerRepositoryOut<Volunteer>" "GenericRepositoryOut`1"
+VolunteerControl --> "EmployeeRepositoryIn<Employee>" "GenericRepositoryIn`1"
+VolunteerControl --> "EmployeeRepositoryOut<Employee>" "GenericRepositoryOut`1"
+VolunteerControl o-> "settings" JsonSerializerSettings
+@enduml

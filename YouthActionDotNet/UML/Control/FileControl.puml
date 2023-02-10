@@ -1,0 +1,9 @@
+@startuml
+class FileControl {
+    + FileControl(context:DBContext)
+    + <<async>> UploadFile(fileName:string, filePath:string) : Task<string>
+    + <<async>> GetFile(id:string) : Task<string>
+}
+FileControl --> "FileRepositoryIn" FileRepositoryIn
+FileControl --> "FileRepositoryOut" FileRepositoryOut
+@enduml

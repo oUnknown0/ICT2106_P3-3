@@ -1,0 +1,40 @@
+@startuml
+class Settings {
+}
+class UserSettings {
+    + UserSettings()
+}
+class InputType {
+    + type : string <<get>> <<set>>
+    + displayLabel : string <<get>> <<set>>
+    + editable : bool <<get>> <<set>>
+    + primaryKey : bool <<get>> <<set>>
+    + toolTip : string <<get>> <<set>>
+}
+class "DropdownInputType`1"<T> {
+}
+class DropdownInputType {
+}
+class "DropdownOption`1"<T> {
+    + value : T <<get>> <<set>>
+    + label : string <<get>> <<set>>
+}
+class DropdownOption {
+    + value : string <<get>> <<set>>
+    + label : string <<get>> <<set>>
+}
+class ColumnHeader {
+    + displayHeader : string <<get>> <<set>>
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+Settings --> "ColumnSettings<string,ColumnHeader>" "Dictionary`2"
+Settings --> "FieldSettings<string,InputType>" "Dictionary`2"
+Settings <|-- UserSettings
+InputType <|-- "DropdownInputType`1"
+"DropdownInputType`1" --> "options<DropdownOption<T>>" "List`1"
+InputType <|-- DropdownInputType
+DropdownInputType --> "options<DropdownOption>" "List`1"
+@enduml

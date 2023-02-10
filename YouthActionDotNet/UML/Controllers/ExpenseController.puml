@@ -1,0 +1,20 @@
+@startuml
+class ExpenseController {
+    + ExpenseController(context:DBContext)
+    + <<async>> All() : Task<ActionResult<string>>
+    + <<async>> Get(id:string) : Task<ActionResult<string>>
+    + <<async>> Create(template:Expense) : Task<ActionResult<string>>
+    + <<async>> Update(id:string, template:Expense) : Task<ActionResult<string>>
+    + <<async>> UpdateAndFetchAll(id:string, template:Expense) : Task<ActionResult<string>>
+    + <<async>> Delete(id:string) : Task<ActionResult<string>>
+    + <<async>> Delete(template:Expense) : Task<ActionResult<String>>
+    + Exists(id:string) : bool
+    + Settings() : string
+}
+class "IUserInterfaceCRUD`1"<T> {
+}
+ControllerBase <|-- ExpenseController
+"IUserInterfaceCRUD`1" "<Expense>" <|-- ExpenseController
+ExpenseController --> "expenseControl" ExpenseControl
+ExpenseController o-> "settings" JsonSerializerSettings
+@enduml

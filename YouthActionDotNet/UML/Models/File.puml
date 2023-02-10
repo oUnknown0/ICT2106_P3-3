@@ -1,0 +1,10 @@
+@startuml
+class File {
+    + File()
+    + FileId : string <<get>> <<set>>
+    + FileName : string <<get>> <<set>>
+    + FileUrl : string <<get>> <<set>>
+    + FileMIME : string <<get>> <<set>>
+    + FileExt : string <<get>> <<set>>
+}
+@enduml

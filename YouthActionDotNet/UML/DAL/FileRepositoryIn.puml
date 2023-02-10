@@ -1,0 +1,9 @@
+@startuml
+class FileRepositoryIn {
+    + FileRepositoryIn(context:DBContext)
+    + <<async>> UploadFile(fileName:string, fileUrl:string) : Task<string>
+}
+class "GenericRepositoryIn`1"<T> {
+}
+"GenericRepositoryIn`1" "<Models.File>" <|-- FileRepositoryIn
+@enduml

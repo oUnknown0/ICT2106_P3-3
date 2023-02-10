@@ -1,0 +1,15 @@
+@startuml
+class EmployeeController {
+    + EmployeeController(context:DBContext)
+    + <<async>> GetEmployee(id:int) : Task<ActionResult<Employee>>
+    + <<async>> GetAllEmployees() : Task<ActionResult<String>>
+    + <<async>> PutEmployee(id:string, employee:Employee) : Task<IActionResult>
+    + <<async>> PostUser(employee:Employee) : Task<ActionResult<String>>
+    + <<async>> DeleteEmployee(id:int) : Task<IActionResult>
+    - EmployeeExists(id:string) : bool
+    + GetEmployeeSettings() : string
+}
+ControllerBase <|-- EmployeeController
+EmployeeController --> "_context" DBContext
+EmployeeController o-> "settings" JsonSerializerSettings
+@enduml
