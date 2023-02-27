@@ -18,7 +18,7 @@ namespace YouthActionDotNet.Controllers
     [ApiController]
     public class ProjectController : ControllerBase, IUserInterfaceCRUD<Project>
     {
-      private ProjectControl projectControl;
+        private ProjectControl projectControl;
         JsonSerializerSettings settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
 
         public ProjectController(DBContext context)
@@ -42,7 +42,33 @@ namespace YouthActionDotNet.Controllers
         {
             return await projectControl.Get(id);
         }
-
+        //---------------------------------------------TO BE UPDATED----------------------------------//
+        [HttpGet("GetProjectByTag/{tag}")]
+        public async Task<ActionResult<string>> GetProjectByTag(string tag)
+        {
+            Console.WriteLine("GetProjectByTag");
+            Console.WriteLine(tag);
+            return await projectControl.GetProjectByTag(tag);
+        }
+        [HttpGet("GetProjectInProgress")]
+        public async Task<ActionResult<string>> GetProjectInProgress()
+        {
+            Console.WriteLine("GetProjectInProgress");
+            return await projectControl.GetProjectInProgress();
+        }
+        [HttpGet("GetProjectPinned")]
+        public async Task<ActionResult<string>> GetProjectPinned()
+        {
+            Console.WriteLine("GetProjectPinned");
+            return await projectControl.GetProjectPinned();
+        }
+        [HttpGet("GetProjectArchived")]
+        public async Task<ActionResult<string>> GetProjectArchived()
+        {
+            Console.WriteLine("GetProjectArchived");
+            return await projectControl.GetProjectArchived();
+        }
+        //---------------------------------------------TO BE UPDATED----------------------------------//
         [HttpPut("{id}")]
         public async Task<ActionResult<string>> Update(string id, Project template)
         {

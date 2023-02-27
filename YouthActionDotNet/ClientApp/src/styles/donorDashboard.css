@@ -1,0 +1,78 @@
+h1{
+    font-size: 32px;
+}
+
+h2{
+    font-size: 24px;
+}
+
+h5 {
+  font-weight: 500;
+}
+
+thead{
+  background-color: #dedede;
+  color: #000;
+}
+th{
+  font-weight: 700;
+  font-size: 16px;
+}
+
+tr {
+  font-size: 16px; 
+  height: 60px;
+  vertical-align: middle;          
+}
+td{
+  vertical-align: middle;    
+}
+    
+.btn-primary
+{
+  background-color: #1c2c5b;
+  color: #FFF;
+     
+}
+
+.card-style {
+  background-color: #1c2c5b;
+  color: #FFF;
+  padding: 10px;
+  width: 250px;
+  height: 150px;
+  margin: 10px;
+     
+}
+
+.icon-style {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+   
+.card-title{
+  font-weight: 700;
+  font-size: 30px;
+
+}
+.card-subtitle {
+  font-style: italic;
+  text-transform: capitalize;
+  opacity: 0.5;
+  font-size: 18px;
+}
+.view-all{
+  font-size: 16px;
+  font-weight: 500;
+  color: #1c2c5b;
+}
+.view-details{
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  height: 40px;
+  background: #1c2c5b;
+  padding: 10px;
+  margin-left: 20px;
+  margin-top: 10px;
+}

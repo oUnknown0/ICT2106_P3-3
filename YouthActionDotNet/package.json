@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jspdf": "^2.5.1",
+    "react-icons": "^4.7.1"
+  }
+}

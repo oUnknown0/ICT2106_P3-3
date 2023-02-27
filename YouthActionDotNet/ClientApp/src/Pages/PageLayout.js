@@ -1,15 +1,11 @@
 import React from "react";
 import { ActionsButton, DivSpacing, IconButton, IconButtonWithText, MultiStepBox, SearchBar, SearchTags, SizedBox, StdButton, TagsBox } from "../Components/common";
-import { AccessDeniedPanel, Loading } from "../Components/appCommon";
+import {AccessDeniedPanel, Loading} from "../Components/appCommon";
 import { StdInput } from "../Components/input";
 import SlideDrawer, { DrawerItemNonLink } from "../Components/sideNav";
 import { Cell, ListTable, HeaderRow, ExpandableRow } from "../Components/tableComponents";
-import { CSVLink } from "react-csv";
+import {CSVLink} from "react-csv";
 import U from "../Utilities/utilities";
-import JsPDF from 'jspdf';
-import { FaFileWord} from 'react-icons/fa';
-import { FaFileCsv} from 'react-icons/fa';
-import {FaFilePdf} from 'react-icons/fa';
 
 export const searchSuggestions = [
 ]
@@ -42,14 +38,14 @@ export default class DatapageLayout extends React.Component {
         this.handleClose = this.handleClose.bind(this);
         this.expand = this.expand.bind(this);
     }
-    componentDidMount = async () => {
+    componentDidMount = async () =>{
         document.title = this.props.settings.title;
         window.addEventListener("resize", this.resize.bind(this));
         this.resize();
         const perms = await this.props.permissions.find(p => p.Module === this.props.settings.title);
         const reformattedPerms = [];
-        Object.keys(perms).forEach((perm) => {
-            return perm === "Module" ? null :
+        Object.keys(perms).forEach((perm)=>{
+            return perm === "Module" ? null : 
                 perms[perm] === true ? reformattedPerms.push(perm) : null
         });
         const pageNumbers = [];
@@ -57,24 +53,24 @@ export default class DatapageLayout extends React.Component {
             pageNumbers.push(i);
         }
         let extraComponents = [];
-        this.props.extraComponents?.length > 0 &&
+        this.props.extraComponents?.length > 0 && 
 
-            this.props.extraComponents.forEach((component) => {
-
-                U.checkSubset(component.requiredPerms, reformattedPerms) &&
+            this.props.extraComponents.forEach((component)=>{
+                
+                U.checkSubset(component.requiredPerms,reformattedPerms) && 
                     extraComponents.push(component)
             })
-        let tableHeaderActions = await this.populateActions(perms, extraComponents);
+        let tableHeaderActions = await this.populateActions(perms,extraComponents);
         this.setState({
             extraComponents: extraComponents,
             tableHeaderActions: tableHeaderActions,
             data: this.props.data,
-            perms: perms,
+            perms : perms,
             pageNumbers: pageNumbers,
         })
     }
 
-    populateActions = async (perms, components) => {
+    populateActions = async (perms,components)=>{
         let tableHeaderActions = [];
         if (perms?.Create) {
             tableHeaderActions.push({ label: "Add " + this.props.settings.title, onClick: () => { this.setExpansionContent("add") } })
@@ -83,9 +79,9 @@ export default class DatapageLayout extends React.Component {
             tableHeaderActions.push({ label: "Delete " + this.props.settings.title, onClick: () => { this.setExpansionContent("del") } })
         }
         tableHeaderActions.push({ label: "Generate Spreadsheet", onClick: () => { this.setExpansionContent("gs") } },)
-
-        components.forEach((component) => {
-            tableHeaderActions.push({ label: component.label, onClick: () => { this.setExpansionContent(component.key) } })
+        
+        components.forEach((component)=>{
+            tableHeaderActions.push({label: component.label, onClick: ()=>{this.setExpansionContent(component.key)}})
         })
         return tableHeaderActions;
     }
@@ -113,12 +109,12 @@ export default class DatapageLayout extends React.Component {
     }
 
     expand() {
-        if (this.state.expanded) {
+        if(this.state.expanded){
             this.setState({
                 expanded: !this.state.expanded,
-                expansionContent: "",
+                expansionContent:"",
             })
-        } else {
+        }else{
             this.setState({
                 expanded: !this.state.expanded,
             })
@@ -164,23 +160,23 @@ export default class DatapageLayout extends React.Component {
         })
     }
 
-    handleSearchCallBack = (tags) => {
-
-        if (tags.length === 0) {
+    handleSearchCallBack =(tags) =>{
+        
+        if(tags.length === 0){
             return this.setState({
                 data: this.props.data
             })
         }
         let filteredData = [];
-        this.props.data.forEach((item) => {
-            Object.keys(item).forEach((key) => {
+        this.props.data.forEach((item)=>{
+            Object.keys(item).forEach((key)=>{
                 tags.forEach((tag) => {
-                    let tagvalue = tag.value.substring(1, tag.value.length - 1);
+                    let tagvalue = tag.value.substring(1,tag.value.length -1);
                     let found = String(item[key]).toLowerCase().includes(tagvalue.toLowerCase());
-                    if (found) {
-                        if (filteredData.find((filteredItem) => filteredItem === item)) {
+                    if(found){
+                        if(filteredData.find((filteredItem)=>filteredItem === item)){
                             return;
-                        } else {
+                        }else{
                             filteredData.push(item);
                         }
                     }
@@ -199,7 +195,7 @@ export default class DatapageLayout extends React.Component {
     }
 
     render() {
-        if (this.state.content === "") {
+        if(this.state.content === ""){
             return <div></div>
         }
         const indexOfLastItem = this.state.currentPage * this.state.itemsPerPage;
@@ -207,183 +203,149 @@ export default class DatapageLayout extends React.Component {
         const currentItems = this.state.data.slice(indexOfFirstItem, indexOfLastItem);
 
         return (
-            this.state.perms?.Read ?
-                <div className="d-flex flex-column container-fluid listPageContainer h-100">
-                    {this.props.error !== "" &&
-                        <div className="listPageContainer-error">
-                            {this.props.error}
-                            <IconButton
-                                icon={<i className="bi bi-x-circle-fill"></i>}
-                                onClick={() => this.props.requestError("")}
-                            ></IconButton>
-                        </div>
-                    }
-                    <div className="col-12 d-flex flex-column h-50">
-
-                        <TableHeader actions={
-                            this.state.tableHeaderActions
-                        }
-                            requestRefresh={this.props.requestRefresh}
-                            fieldSettings={this.props.fieldSettings}
-                            settings={this.props.settings}
-                            showBottomMenu={this.state.showBottomMenu}
-                            handles={this.setExpansionContent}
-                            persist={this.state.showBottomMenu}
-                            expanded={this.state.expanded}
-                            component={this.state.expansionContent}
-                            handleClose={this.expand}
-                            handleSearchCallBack={this.handleSearchCallBack}
-                            tagUpdate={this.handleSearchCallBack}
-                            data={this.state.data}
-                            perms={this.state.perms}
-                            requestError={this.props.requestError}
-                            extraComponents={this.state.extraComponents}
-                        ></TableHeader>
-                        <TableFooter settings={this.props.settings} toggle={this.drawerToggleClickHandler} showBottomMenu={this.state.showBottomMenu}></TableFooter>
-                        <DivSpacing spacing={1}></DivSpacing>
-                        {/* ----------------------------------------------vvvvvvvvv TO BE COMMENTED OUT vvvvvvvvvvvv------------------------------ */}
-                        <div><h1>Pinned Projects</h1></div>
-                        <div className="d-flex justify-content-center align-items-start flex-fill">
-                            <ListTable settings={this.settings}>
-                                <HeaderRow>
-                                    {Object.keys(this.props.headers).map((key, index) => {
-                                        return <Cell width={"100%"} key={index}>{this.props.headers[key].displayHeader}</Cell>
-                                    })}
-                                </HeaderRow>
-                                {this.state.data &&
-
-                                    currentItems.map((row, index) => {
-                                        return <ExpandableRow
-                                            updateHandle={this.props.updateHandle}
-                                            values={row}
-                                            fieldSettings={this.props.fieldSettings}
-                                            key={index}
-                                            settings={settings}
-                                            headers={this.props.headers}
-                                            setExpansionContent={this.setExpansionContent}
-                                            handleSeeMore={this.handleSeeMore}
-                                            handleClose={this.handleClose}
-                                            popUpContent={this.state.popUpContent}
-                                            perms={this.state.perms}><br></br><button color="red">Unpin Project</button><br></br><br></br>Export to:<FaFileWord size={30} /><FaFilePdf size={30} /><FaFileCsv size={30} />
-                                            {this.props.children ?
-                                                this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)] :
-                                                ""}
-                                        </ExpandableRow>
-                                    })}
-                            </ListTable>
-                        </div>
-                        {/* -----------------------------------------^^^^^^^^ TO BE COMMENTED OUT ^^^^^^^^----------------------------------- */}
-                        <TableFooter settings={this.props.settings} toggle={this.drawerToggleClickHandler} showBottomMenu={this.state.showBottomMenu}></TableFooter>
-                        <DivSpacing spacing={1}></DivSpacing>
-                        <div><h1>Projects</h1></div>
-                        <div className="d-flex justify-content-center align-items-start flex-fill">
-                            <ListTable settings={this.settings}>
-                                <HeaderRow>
-                                    {Object.keys(this.props.headers).map((key, index) => {
-                                        return <Cell width={"100%"} key={index}>{this.props.headers[key].displayHeader}</Cell>
-                                    })}
-                                </HeaderRow>
-                                {this.state.data &&
-
-                                    currentItems.map((row, index) => {
-                                        return <ExpandableRow
-                                            updateHandle={this.props.updateHandle}
-                                            values={row}
-                                            fieldSettings={this.props.fieldSettings}
-                                            key={index}
-                                            settings={settings}
-                                            headers={this.props.headers}
-                                            setExpansionContent={this.setExpansionContent}
-                                            handleSeeMore={this.handleSeeMore}
-                                            handleClose={this.handleClose}
-                                            hasFields={this.props.hasFields}
-                                            popUpContent={this.state.popUpContent}
-                                            perms={this.state.perms}><br></br><button>Pin Project</button><button>Archive Project</button><br></br><br></br>Export to:<FaFileWord size={30}/><FaFilePdf size={30}/><FaFileCsv size={30}/>
-                                            {this.props.children? 
-                                            this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
-                                            ""}
-                                        </ExpandableRow>
-                                    })}
-                            </ListTable>
-
-                        </div>
-                        <div className="d-flex justify-content-end page-nums-container align-self-end">
-                            <div className="items-per-page">
-                                <StdInput
-                                    type="dropdown"
-                                    label="hidden"
-                                    value={this.state.itemsPerPage}
-                                    onChange={(label, e) => {
-                                        this.setState({ itemsPerPage: parseInt(e) })
-                                        this.rerenderPageNums(parseInt(e));
-                                    }}
-                                    options={[
-                                        { value: 5, label: "5 Per Page" },
-                                        { value: 10, label: "10 Per Page" },
-                                        { value: 15, label: "15 Per Page" },
-                                        { value: 20, label: "20 Per Page" },
-                                        { value: 25, label: "25 Per Page" },
-                                        { value: 30, label: "30 Per Page" },
-                                        { value: 35, label: "35 Per Page" },
-                                        { value: 40, label: "40 Per Page" },
-                                    ]}
-                                    enabled={true}
-                                >
-                                </StdInput>
-                            </div>
-
-                            <ul className="page-nums">
-                                <li className={"page-direction prev " + (this.state.currentPage === 1 ? "disabled" : "")}>
-                                    <a href="#" onClick={() => this.pageNumberClick(this.state.currentPage - 1)}><i className="bi bi-chevron-left"></i></a>
-                                </li>
-                                {this.state.pageNumbers > 5 ?
-                                    this.state.pageNumbers.map((number, index) => {
-                                        if (this.state.currentPage > 3) {
-                                            if (number > this.state.currentPage - 3 && number < this.state.currentPage + 3) {
-                                                return (
-                                                    <li key={number} className={"page-num " + (this.state.currentPage === number ? "active" : "")}>
-                                                        <a href="#" onClick={() => this.pageNumberClick(number)}>{number}</a>
-                                                    </li>
-                                                )
-                                            }
-                                        } else {
-                                            if (number < 7) {
-                                                return (
-                                                    <li key={number} className={"page-num " + (this.state.currentPage === number ? "active" : "")}>
-                                                        <a href="#" onClick={() => this.pageNumberClick(number)}>{number}</a>
-                                                    </li>
-                                                )
-                                            }
-                                        }
-                                    })
-                                    :
-                                    this.state.pageNumbers.map((number, index) => {
-                                        return (
-                                            <li key={number} className={"page-num " + (this.state.currentPage === number ? "active" : "")}>
-                                                <a href="#" onClick={() => this.pageNumberClick(number)}>{number}</a>
-                                            </li>
-                                        )
-                                    })
-                                }
-                                <li className={"page-direction next " + (this.state.currentPage === this.state.pageNumbers.length ? "disabled" : "")}>
-                                    <a href="#" onClick={() => this.pageNumberClick(this.state.currentPage + 1)}><i className="bi bi-chevron-right"></i></a>
-                                </li>
-                            </ul>
-                        </div>
+            this.state.perms?.Read ? 
+            <div className="d-flex flex-column container-fluid listPageContainer h-100">
+                {this.props.error !== "" && 
+                    <div className="listPageContainer-error">
+                        {this.props.error}
+                        <IconButton 
+                            icon = {<i className="bi bi-x-circle-fill"></i>} 
+                            onClick = {()=>this.props.requestError("")}
+                        ></IconButton>
                     </div>
-                    <BottomMenu actions={
+                }
+                <div className="col-12 d-flex flex-column h-100">
+                    
+                    <TableHeader actions={
                         this.state.tableHeaderActions
-                    } settings={this.settings} show={this.state.drawerOpen} showBottomMenu={this.state.showBottomMenu} handles={this.setExpansionContent}></BottomMenu>
+                    } 
+                    requestRefresh={this.props.requestRefresh} 
+                    fieldSettings={this.props.fieldSettings} 
+                    settings={this.props.settings} 
+                    showBottomMenu={this.state.showBottomMenu} 
+                    handles={this.setExpansionContent} 
+                    persist={this.state.showBottomMenu} 
+                    expanded={this.state.expanded} 
+                    component={this.state.expansionContent} 
+                    handleClose={this.expand}
+                    handleSearchCallBack = {this.handleSearchCallBack}
+                    tagUpdate = {this.handleSearchCallBack}
+                    data={this.state.data}
+                    perms={this.state.perms}
+                    requestError={this.props.requestError}
+                    extraComponents={this.state.extraComponents}
+                    ></TableHeader>
+                    <TableFooter settings={this.props.settings} toggle={this.drawerToggleClickHandler} showBottomMenu={this.state.showBottomMenu}></TableFooter>
+                    <DivSpacing spacing={1}></DivSpacing>
+                    <div className="d-flex justify-content-center align-items-start flex-fill">
+                        <ListTable settings={this.settings}>
+                            <HeaderRow>
+                                {Object.keys(this.props.headers).map((key, index) => {
+                                    return <Cell width={"100%"} key={index}>{this.props.headers[key].displayHeader}</Cell>
+                                })}
+                            </HeaderRow>
+                            {this.state.data && 
+                            
+                            currentItems.map((row, index) => {      
+                                return <ExpandableRow 
+                                updateHandle={this.props.updateHandle} 
+                                values={row} 
+                                fieldSettings={this.props.fieldSettings} 
+                                key={index} 
+                                settings={settings} 
+                                headers={this.props.headers} 
+                                setExpansionContent={this.setExpansionContent} 
+                                handleSeeMore={this.handleSeeMore} 
+                                handleClose={this.handleClose} 
+                                hasFields={this.props.hasFields}
+                                popUpContent={this.state.popUpContent}
+                                perms={this.state.perms}>
+                                    {this.props.children? 
+                                    this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
+                                    ""}
+                                </ExpandableRow>
+                            })}
+                        </ListTable>
+                        
+                    </div>
+                    <div className="d-flex justify-content-end page-nums-container align-self-end">
+                        <div className="items-per-page">
+                            <StdInput
+                                type="dropdown"
+                                label="hidden"
+                                value={this.state.itemsPerPage}
+                                onChange={(label,e) => 
+                                    {
+                                        this.setState({ itemsPerPage: parseInt(e) })
+                                        this.rerenderPageNums( parseInt(e));
+                                    }}
+                                options={[
+                                    {value: 5,label: "5 Per Page"},
+                                    {value: 10,label: "10 Per Page"},
+                                    {value: 15,label: "15 Per Page"},
+                                    {value: 20,label: "20 Per Page"},
+                                    {value: 25,label: "25 Per Page"},
+                                    {value: 30,label: "30 Per Page"},
+                                    {value: 35,label: "35 Per Page"},
+                                    {value: 40,label: "40 Per Page"},
+                                ]}
+                                enabled={true}
+                            >
+                            </StdInput>
+                        </div>
+                        
+                        <ul className="page-nums">
+                            <li className={"page-direction prev " + (this.state.currentPage === 1 ? "disabled" : "")}>
+                                <a href="#" onClick={() => this.pageNumberClick(this.state.currentPage - 1)}><i className="bi bi-chevron-left"></i></a>
+                            </li>
+                            {this.state.pageNumbers > 5 ? 
+                                this.state.pageNumbers.map((number, index) => {
+                                    if(this.state.currentPage > 3){
+                                        if(number > this.state.currentPage - 3 && number < this.state.currentPage + 3){
+                                            return (
+                                                <li key={number} className={"page-num " + (this.state.currentPage === number ? "active" : "")}>
+                                                    <a href="#" onClick={() => this.pageNumberClick(number)}>{number}</a>
+                                                </li>
+                                            )
+                                        }
+                                    }else{
+                                        if(number < 7){
+                                            return (
+                                                <li key={number} className={"page-num " + (this.state.currentPage === number ? "active" : "")}>
+                                                    <a href="#" onClick={() => this.pageNumberClick(number)}>{number}</a>
+                                                </li>
+                                            )
+                                        }
+                                    }
+                                })
+                            :
+                                this.state.pageNumbers.map((number, index) => {
+                                    return (
+                                        <li key={number} className={"page-num " + (this.state.currentPage === number ? "active" : "")}>
+                                            <a href="#" onClick={() => this.pageNumberClick(number)}>{number}</a>
+                                        </li>
+                                    )
+                                })
+                            }
+                            <li className={"page-direction next " + (this.state.currentPage === this.state.pageNumbers.length ? "disabled" : "")}>
+                                <a href="#" onClick={() => this.pageNumberClick(this.state.currentPage + 1)}><i className="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                :
-                <AccessDeniedPanel>
-                </AccessDeniedPanel>
+                <BottomMenu actions={
+                        this.state.tableHeaderActions
+                } settings={this.settings} show={this.state.drawerOpen} showBottomMenu={this.state.showBottomMenu} handles={this.setExpansionContent}></BottomMenu>
+            </div>
+            :
+            <AccessDeniedPanel>
+            </AccessDeniedPanel>
         )
     }
 }
-// PageLayout.defaultProps = {
-//     hasFields: true
-// }
+DatapageLayout.defaultProps = {
+    hasFields: true
+}
 
 export class TableHeader extends React.Component {
     constructor(props) {
@@ -401,8 +363,8 @@ export class TableHeader extends React.Component {
     }
 
 
-    onCancelClick = (tagToRemove) => {
-        let newTags = this.state.currentTags.filter((tag) => {
+    onCancelClick = (tagToRemove) =>{
+        let newTags = this.state.currentTags.filter((tag)=>{
             return tag !== tagToRemove;
         })
         this.setState({
@@ -478,18 +440,18 @@ export class TableHeader extends React.Component {
                                     actions={this.props.actions}></TableQuickAction></div>}
                     </div>
                 </div>
-                <HeaderExpansion
-                    perms={this.props.perms}
-                    settings={this.props.settings}
-                    requestRefresh={this.props.requestRefresh}
-                    fieldSettings={this.props.fieldSettings}
-                    expanded={this.props.expanded}
-                    component={this.props.component}
-                    handleClose={this.props.handleClose}
-                    data={this.props.data}
-                    requestError={this.props.requestError}
-                    extraComponents={this.props.extraComponents}
-                    actions={this.props.actions}
+                <HeaderExpansion 
+                perms = {this.props.perms}
+                settings={this.props.settings} 
+                requestRefresh={this.props.requestRefresh} 
+                fieldSettings={this.props.fieldSettings} 
+                expanded={this.props.expanded} 
+                component={this.props.component}
+                handleClose={this.props.handleClose} 
+                data = {this.props.data}
+                requestError = {this.props.requestError}
+                extraComponents = {this.props.extraComponents}
+                actions={this.props.actions}
                 >
                 </HeaderExpansion>
                 <DivSpacing spacing={1}></DivSpacing>
@@ -508,25 +470,25 @@ TableHeader.defaultProps = {
 }
 
 export class HeaderExpansion extends React.Component {
-    state = {
+    state={
         currentStep: 0,
         steps: [],
-        expanded: false,
+        expanded:false,
     }
-    componentDidMount() {
+    componentDidMount(){
         let steps = {}
         let componentsToRender = [];
-        if (this.props.perms.Create) {
+        if(this.props.perms.Create){
             steps[Object.keys(steps).length] = "add"
-            componentsToRender.push(<AddEntry settings={this.props.settings} requestRefresh={this.props.requestRefresh} fieldSettings={this.props.fieldSettings} requestError={this.props.requestError}></AddEntry>)
+            componentsToRender.push(<AddEntry settings={this.props.settings} requestRefresh={this.props.requestRefresh} fieldSettings = {this.props.fieldSettings} requestError={this.props.requestError}></AddEntry>)
         }
-        if (this.props.perms.Delete) {
+        if(this.props.perms.Delete){
             steps[Object.keys(steps).length] = "del"
-            componentsToRender.push(<DeleteEntry settings={this.props.settings} requestRefresh={this.props.requestRefresh} fieldSettings={this.props.fieldSettings} requestError={this.props.requestError}></DeleteEntry>)
+            componentsToRender.push(<DeleteEntry settings={this.props.settings} requestRefresh={this.props.requestRefresh} fieldSettings = {this.props.fieldSettings} requestError={this.props.requestError}></DeleteEntry>)
         }
         steps[Object.keys(steps).length] = "gs"
-        componentsToRender.push(<GenerateSpreadsheet settings={this.props.settings} requestRefresh={this.props.requestRefresh} fieldSettings={this.props.fieldSettings} data={this.props.data} requestError={this.props.requestError}></GenerateSpreadsheet>)
-        this.props.extraComponents.forEach((component) => {
+        componentsToRender.push(<GenerateSpreadsheet settings={this.props.settings} requestRefresh={this.props.requestRefresh} fieldSettings = {this.props.fieldSettings} data={this.props.data} requestError={this.props.requestError}></GenerateSpreadsheet>)
+        this.props.extraComponents.forEach((component)=>{
             steps[Object.keys(steps).length] = component.key
             componentsToRender.push(component.component)
         })
@@ -537,19 +499,19 @@ export class HeaderExpansion extends React.Component {
         })
     }
 
-    getKeyByValue(obj, value) {
+    getKeyByValue(obj, value){
         let key = Object.keys(obj).find(key => obj[key] === value);
         console.log(key);
         return parseInt(key);
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.component != this.props.component) {
+        if(prevProps.component != this.props.component){
             this.setState({
                 currentStep: this.getKeyByValue(this.state.steps, this.props.component),
             })
         }
-        if (prevProps.expanded != this.props.expanded) {
+        if(prevProps.expanded != this.props.expanded){
             this.setState({
                 expanded: this.props.expanded,
             })
@@ -557,18 +519,18 @@ export class HeaderExpansion extends React.Component {
     }
 
     render() {
-        return (
-            this.state.expanded ?
+            return (
+                this.state.expanded?
                 <HeaderExpansionPane handleClose={this.props.handleClose} title={this.props.actions[this.state.currentStep].label}>
-                    <MultiStepBox currentStep={this.state.currentStep} steps={this.state.steps}>
+                    <MultiStepBox currentStep = {this.state.currentStep} steps={this.state.steps}>
                         {this.state.componentsToRender.map((component, index) => {
-                            return (React.cloneElement(component, { key: index }))
+                            return (React.cloneElement(component, {key: index}))
                         })}
                     </MultiStepBox>
                 </HeaderExpansionPane>
                 :
                 <div></div>
-        )
+            )
 
     }
 }
@@ -588,7 +550,7 @@ class HeaderExpansionPane extends React.Component {
 
 }
 
-class AddEntry extends React.Component {
+class AddEntry extends React.Component{
     state = {
         courseToAdd: {},
     }
@@ -605,7 +567,7 @@ class AddEntry extends React.Component {
         console.log(file);
         const formData = new FormData();
         formData.append("file", file.FileUrl);
-
+        
         return await fetch("/api/File/Upload",
             {
                 method: "POST",
@@ -638,65 +600,65 @@ class AddEntry extends React.Component {
         e.preventDefault();
         var courseToAdd = this.state.courseToAdd;
         var fileUploadFields = [];
-
-        for (const field of Object.keys(this.props.fieldSettings)) {
+        
+        for(const field of Object.keys(this.props.fieldSettings)){
             if (this.props.fieldSettings[field].type === "file") {
                 fileUploadFields.push(field);
             }
         }
 
-        for (const field of fileUploadFields) {
+        for(const field of fileUploadFields){
             try {
                 const res = await this.uploadFile(courseToAdd[field]);
-                if (res.success) {
+                if(res.success){
                     courseToAdd[field] = res.data;
                 }
-            } catch (e) {
+            }catch(e){
                 this.props.requestError(e);
             }
         }
         try {
             const res = await this.createCourse(courseToAdd);
-            if (res.success) {
+            if(res.success){
                 this.props.requestRefresh();
-            } else {
+            }else{
                 this.props.requestError(res.message);
             }
-        } catch (e) {
+        }catch(e){
             this.props.requestError(e);
         }
     }
 
-    render() {
+    render(){
         return (
             <div className="container-fluid addEntry">
                 <form className={"addEntry-inputFields"} onSubmit={this.handleCourseCreation}>
-                    {Object.keys(this.props.fieldSettings).map(
-                        (key, index) => {
-                            return (this.props.fieldSettings[key].primaryKey ? "" :
-                                <StdInput
-                                    label={this.props.fieldSettings[key].displayLabel}
-                                    type={this.props.fieldSettings[key].type}
-                                    enabled={true}
-                                    fieldLabel={key}
-                                    onChange={this.onChange}
-                                    options={this.props.fieldSettings[key].options}
-                                    dateFormat={this.props.fieldSettings[key].dateFormat}
-                                    allowEmpty={true}
-                                    toolTip={this.props.fieldSettings[key].toolTip}
-                                >
-                                </StdInput>)
-                        }
-                    )}
-                    <StdButton type={"submit"}>Submit</StdButton>
-
+                {Object.keys(this.props.fieldSettings).map(
+                    (key, index) => {
+                        return (this.props.fieldSettings[key].primaryKey? "" : 
+                            <StdInput 
+                            label = {this.props.fieldSettings[key].displayLabel}
+                            type={this.props.fieldSettings[key].type}
+                            enabled = {true}
+                            fieldLabel={key}
+                            onChange = {this.onChange}
+                            options={this.props.fieldSettings[key].options}
+                            dateFormat = {this.props.fieldSettings[key].dateFormat}
+                            allowEmpty = {true}
+                            toolTip = {this.props.fieldSettings[key].toolTip}
+                            >
+                            </StdInput>)
+                    }
+                )}
+                <StdButton type={"submit"}>Submit</StdButton>
+            
                 </form>
-            </div>
+                </div>
         )
     }
 }
 
-class DeleteEntry extends React.Component {
+class DeleteEntry extends React.Component{
     state = {
         courseToDelete: {},
     }
@@ -725,50 +687,50 @@ class DeleteEntry extends React.Component {
     handleCourseDeletion = async (e) => {
         e.preventDefault();
         await this.deleteCourse(this.state.courseToDelete).then((content) => {
-            if (content.success) {
+            if(content.success){
                 this.props.requestRefresh();
-            } else {
+            }else{
                 this.props.requestError(content.message);
             }
         })
     }
 
-    render() {
+    render(){
         return (
             <div className="container-fluid deleteEntry">
                 <form className={"deleteEntry-inputFields"} onSubmit={this.handleCourseDeletion}>
-                    {Object.keys(this.props.fieldSettings).map(
-                        (key, index) => {
-                            return (this.props.fieldSettings[key].primaryKey ?
-                                <StdInput
-                                    label={this.props.fieldSettings[key].displayLabel}
-                                    type={"text"}
-                                    enabled={true}
-                                    fieldLabel={key}
-                                    onChange={this.onChange}
-                                    options={this.props.fieldSettings[key].options}
-                                    dateFormat={this.props.fieldSettings[key].dateFormat}
-                                >
-                                </StdInput> : "")
-                        }
-                    )}
-                    <StdButton type={"submit"}>Submit</StdButton>
-
+                {Object.keys(this.props.fieldSettings).map(
+                    (key, index) => {
+                        return (this.props.fieldSettings[key].primaryKey? 
+                            <StdInput 
+                            label = {this.props.fieldSettings[key].displayLabel}
+                            type={"text"}
+                            enabled = {true}
+                            fieldLabel={key}
+                            onChange = {this.onChange}
+                            options={this.props.fieldSettings[key].options}
+                            dateFormat = {this.props.fieldSettings[key].dateFormat}
+                            >
+                            </StdInput> : "")
+                    }
+                )}
+                <StdButton type={"submit"}>Submit</StdButton>
+            
                 </form>
             </div>
         )
     }
 }
 
-class GenerateSpreadsheet extends React.Component {
-    state = {
+class GenerateSpreadsheet extends React.Component{
+    state={
         columns: [],
         spreadsheetReady: false,
     }
-
-    componentDidMount() {
+    
+    componentDidMount(){
         let columns = [];
-        for (var i = 0; i < Object.keys(this.props.fieldSettings).length; i++) {
+        for(var i = 0; i < Object.keys(this.props.fieldSettings).length; i++){
             columns.push(
                 {
                     label: Object.keys(this.props.fieldSettings)[i],
@@ -783,14 +745,14 @@ class GenerateSpreadsheet extends React.Component {
 
     reOrderColumns = (index, direction) => {
         var tempColumns = this.state.columns;
-        if (direction === "up") {
-            if (index > 0) {
+        if(direction === "up"){
+            if(index > 0){
                 var temp = tempColumns[index];
                 tempColumns[index] = tempColumns[index - 1];
                 tempColumns[index - 1] = temp;
             }
         } else {
-            if (index < tempColumns.length - 1) {
+            if(index < tempColumns.length - 1){
                 var temp = tempColumns[index];
                 tempColumns[index] = tempColumns[index + 1];
                 tempColumns[index + 1] = temp;
@@ -801,20 +763,19 @@ class GenerateSpreadsheet extends React.Component {
         });
     }
 
-    generateSpreadsheet = () => {
+    generateSpreadsheet = () =>{
         this.setState({
-            spreadsheetReady: false
+            spreadsheetReady : false
         })
 
         // Fake loading time to show false sense of progress
         setTimeout(() => {
             this.setState({
-                spreadsheetReady: true
-            })
-        }, 1000);
+                spreadsheetReady : true
+            })}, 1000);
     }
 
-    render() {
+    render(){
         return (
             <div className="container-fluid generate-spreadsheet">
                 <div className="column-order">
@@ -826,7 +787,7 @@ class GenerateSpreadsheet extends React.Component {
                             </div>
                             <div className="column-name">{column.label}</div>
                         </div>
-                    })}
+                    })}     
                 </div>
                 <div className="generate-actions">
                     <StdButton onClick={() => this.generateSpreadsheet()}>
@@ -834,19 +795,19 @@ class GenerateSpreadsheet extends React.Component {
                     </StdButton>
 
                     {this.state.spreadsheetReady ?
-
-                        <CSVLink data={this.props.data} className={"forget-password"} headers={this.state.columns} filename={this.props.settings.title + ".csv"}>Download</CSVLink>
-                        :
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                    }
+                    
+                    <CSVLink data={this.props.data} className={"forget-password"} headers={this.state.columns} filename={this.props.settings.title + ".csv"}>Download</CSVLink>
+                    :
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    }    
                 </div>
             </div>
         )
     }
 
-
+    
 }
 
 class ColumnSettings extends React.Component {

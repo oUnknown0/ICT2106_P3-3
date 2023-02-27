@@ -215,7 +215,7 @@ export default class DatapageLayoutEmpty extends React.Component {
         )
     }
 }
-export class TableHeader extends React.Component {
+class TableHeader extends React.Component {
     constructor(props) {
         super(props);
         this.toggleSearchBar = this.toggleSearchBar.bind(this);
@@ -319,7 +319,7 @@ TableHeader.defaultProps = {
     component: "",
 }
 
-export class HeaderExpansion extends React.Component {
+class HeaderExpansion extends React.Component {
     state={
         currentStep: 0,
         steps: [],
@@ -659,7 +659,7 @@ class GenerateSpreadsheet extends React.Component{
     
 }
 
-export class TableFooter extends React.Component {
+class TableFooter extends React.Component {
     render() {
         return (
             this.props.showBottomMenu ?
@@ -668,7 +668,7 @@ export class TableFooter extends React.Component {
     }
 }
 
-export class TableQuickAction extends React.Component {
+class TableQuickAction extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -709,7 +709,7 @@ export class TableQuickAction extends React.Component {
     }
 }
 
-export class BottomMenu extends React.Component {
+class BottomMenu extends React.Component {
     render() {
         return (
             this.props.showBottomMenu ?

@@ -14,6 +14,10 @@ namespace YouthActionDotNet.Control
 {
     public class ProjectControl : IUserInterfaceCRUD<Project>
     {
+        //-------------------------------------------------TO BE UPDATED------------------------------------------------//
+        private ProjectRepositoryIn ProjectsRepositoryIn;
+        private ProjectRepositoryOut ProjectsRepositoryOut;
+        //-------------------------------------------------TO BE UPDATED------------------------------------------------//
         private GenericRepositoryIn<Project> ProjectRepositoryIn;
         private GenericRepositoryOut<Project> ProjectRepositoryOut;
         private GenericRepositoryIn<ServiceCenter> ServiceCenterRepositoryIn;
@@ -23,6 +27,10 @@ namespace YouthActionDotNet.Control
 
         public ProjectControl(DBContext context)
         {
+            //-------------------------------------------------TO BE UPDATED------------------------------------------------//
+            ProjectsRepositoryIn = new ProjectRepositoryIn(context);
+            ProjectsRepositoryOut = new ProjectRepositoryOut(context);
+            //-------------------------------------------------TO BE UPDATED------------------------------------------------//
             ProjectRepositoryIn = new GenericRepositoryIn<Project>(context);
             ProjectRepositoryOut = new GenericRepositoryOut<Project>(context);
             ServiceCenterRepositoryIn = new GenericRepositoryIn<ServiceCenter>(context);
@@ -50,7 +58,44 @@ namespace YouthActionDotNet.Control
             }
             return JsonConvert.SerializeObject(new { success = true, data = project, message = "Project Successfully Retrieved" });
         }
-
+        //------------------------------------------------------TO BE UPDATED---------------------------------------------------//
+        public async Task<ActionResult<string>> GetProjectByTag(string tag)
+        {
+            var projectByTag = await ProjectsRepositoryOut.GetProjectByTag(tag);
+            if (projectByTag == null)
+            {
+                return JsonConvert.SerializeObject(new { success = false, message = "Tag Not Found" }, settings);
+            }
+            return JsonConvert.SerializeObject(new { success = true, data = projectByTag, message = "Tag Successfully Retrieved" }, settings);
+        }
+        public async Task<ActionResult<string>> GetProjectInProgress()
+        {
+            var projectByTag = await ProjectsRepositoryOut.GetProjectInProgress();
+            if (projectByTag == null)
+            {
+                return JsonConvert.SerializeObject(new { success = false, message = "Test Not Found" }, settings);
+            }
+            return JsonConvert.SerializeObject(new { success = true, data = projectByTag, message = "Test Successfully Retrieved" }, settings);
+        }
+        public async Task<ActionResult<string>> GetProjectPinned()
+        {
+            var projectByTag = await ProjectsRepositoryOut.GetProjectPinned();
+            if (projectByTag == null)
+            {
+                return JsonConvert.SerializeObject(new { success = false, message = "Test Not Found" }, settings);
+            }
+            return JsonConvert.SerializeObject(new { success = true, data = projectByTag, message = "Test Successfully Retrieved" }, settings);
+        }
+        public async Task<ActionResult<string>> GetProjectArchived()
+        {
+            var projectByTag = await ProjectsRepositoryOut.GetProjectArchived();
+            if (projectByTag == null)
+            {
+                return JsonConvert.SerializeObject(new { success = false, message = "Test Not Found" }, settings);
+            }
+            return JsonConvert.SerializeObject(new { success = true, data = projectByTag, message = "Test Successfully Retrieved" }, settings);
+        }
+        //------------------------------------------------------TO BE UPDATED---------------------------------------------------//
         public async Task<ActionResult<string>> Update(string id, Project template)
         {
             if (id != template.ProjectId)
@@ -152,7 +197,17 @@ namespace YouthActionDotNet.Control
             settings.FieldSettings.Add("ProjectCompletionDate", new InputType { type = "datetime", displayLabel = "Project Completion Date", editable = true, primaryKey = false });
             settings.FieldSettings.Add("ProjectStatus", new InputType { type = "text", displayLabel = "Project Status", editable = true, primaryKey = false });
             settings.FieldSettings.Add("ProjectBudget", new InputType { type = "number", displayLabel = "Project Budget", editable = true, primaryKey = false });
-
+            settings.FieldSettings.Add("ProjectTags", new DropdownInputType
+            {
+                type = "dropdown",
+                displayLabel = "Project Tags",
+                editable = true,
+                primaryKey = false,
+                options = new List<DropdownOption>(){
+                    new DropdownOption { value = "Pinned", label = "Pinned" },
+                    new DropdownOption { value = "Archived", label = "Archived" }
+                }
+            });
             var serviceCenters = ServiceCenterRepositoryOut.GetAll();
             settings.FieldSettings.Add("ServiceCenterId", new DropdownInputType
             {
