@@ -4,6 +4,7 @@ import { FaFileWord } from 'react-icons/fa';
 import { FaFileCsv } from 'react-icons/fa';
 import { FaFilePdf } from 'react-icons/fa';
 import { Loading } from "../../Components/appCommon";
+import U from "../../Utilities/utilities";
 import {
     IconButtonWithText,
     MultiStepBox,
@@ -42,6 +43,17 @@ export default class Project extends React.Component {
     };
 
     async componentDidMount() {
+        const perms = await this.props.permissions.find(p => p.Module === "Project");
+        const reformattedPerms = [];
+        Object.keys(perms).forEach((perm)=>{
+            return perm === "Module" ? null : 
+                perms[perm] === true ? reformattedPerms.push(perm) : null
+        });
+        this.setState({
+            data: this.props.data,
+            perms : perms,
+        })
+
         await this.getContent().then((content) => {
             console.log(content);
             this.setState({
@@ -226,6 +238,7 @@ export default class Project extends React.Component {
     };
 
     render() {
+        console.log("Perms project top "+this.state.perms) //check perms
         if (this.state.loading) {
             return <Loading></Loading>;
         } else {
@@ -249,7 +262,8 @@ export default class Project extends React.Component {
                                 component: (
                                     <ViewManagement
                                         settings={this.settings}
-                                        requestArchived={this.requestArchived}
+                                        perms={this.state.perms}
+                                        requestRefresh={this.requestArchived}
                                         updateHandle={this.props.updateHandle}
                                         headers={this.state.settings.data.ColumnSettings}
                                         fieldSettings={this.state.settings.data.FieldSettings}
@@ -318,7 +332,8 @@ export default class Project extends React.Component {
                     <div><h1>Pinned Projects</h1></div>
                     <ViewManagement
                         settings={this.settings}
-                        requestPinned={this.requestArchived}
+                        perms={this.state.perms}
+                        requestRefresh={this.requestArchived}
                         updateHandle={this.props.updateHandle}
                         headers={this.state.settings.data.ColumnSettings}
                         fieldSettings={this.state.settings.data.FieldSettings}
@@ -343,10 +358,11 @@ class ViewManagement extends React.Component {
         data: this.props.data,
         itemsPerPage: 20,
         currentPage: 1,
-        pageNumbers: [],
+        pageNumbers: []
     };
 
     componentDidMount() {
+        
         // let columns = [];
         // for(var i = 0; i < Object.keys(this.props.fieldSettings).length; i++){
         //     columns.push(
@@ -370,6 +386,7 @@ class ViewManagement extends React.Component {
             indexOfFirstItem,
             indexOfLastItem
         );
+        console.log("Perms project bot "+this.props.perms) //check perms
         console.log("First and last: " + indexOfFirstItem + indexOfLastItem);
         return (
             <div>
@@ -383,20 +400,24 @@ class ViewManagement extends React.Component {
                         {this.state.data &&
                             currentItems.map((row, index) => {
                                 return <ExpandableRow
-                                    updateHandle={this.props.updateHandle}
-                                    values={row}
-                                    fieldSettings={this.props.fieldSettings}
-                                    key={index}
-                                    settings={this.settings}
-                                    headers={this.props.headers}
-                                    setExpansionContent={this.setExpansionContent}
-                                    handleSeeMore={this.handleSeeMore}
-                                    handleClose={this.handleClose}
+                                    updateHandle={this.props.updateHandle} 
+                                    values={row} 
+                                    fieldSettings={this.props.fieldSettings} 
+                                    key={index} 
+                                    settings={this.settings} 
+                                    headers={this.props.headers} 
+                                    setExpansionContent={this.setExpansionContent} 
+                                    handleSeeMore={this.handleSeeMore} 
+                                    handleClose={this.handleClose} 
+                                    hasFields={this.props.hasFields}
                                     popUpContent={this.state.popUpContent}
-                                    perms={this.state.perms}><br></br><button color="red">Unpin Project</button><br></br><br></br>Export to:<FaFileWord size={30} /><FaFilePdf size={30} /><FaFileCsv size={30} />
+                                    perms={this.props.perms}
+                                    >
+                                    <br></br><button color="red">Unpin Project</button><br></br><br></br>Export to:<FaFileWord size={30} /><FaFilePdf size={30} /><FaFileCsv size={30} />
                                     {this.props.children ?
                                         this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)] :
                                         ""}
+                                    <StdButton onClick={() => this.generatePDF()}>Generate PDF</StdButton>
                                 </ExpandableRow>
                             })}
                     </ListTable>
@@ -405,7 +426,9 @@ class ViewManagement extends React.Component {
         );
     }
 }
-
+ViewManagement.defaultProps = {
+    hasFields: true
+}
 class GeneratePDF extends React.Component {
     state = {
         columns: [],
