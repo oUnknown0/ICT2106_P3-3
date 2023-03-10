@@ -321,13 +321,16 @@ export default class Project extends React.Component {
                             },
                         ]}
                     >
-                        {/* {this.state.content.data.map((item, index) => {
+                        {this.state.content.data.map((item, index) => {
                             return (
-                                <div className="staff-extended">
-                                    <PermissionsMap handleUpdate={this.handleUpdate} item={item}></PermissionsMap>
+                                <div>
+                                    <br></br>
+                                    <div><StdButton onClick={() => this.generatePDF()}>Pin Project</StdButton></div>
+                                    <br></br>
+                                    <div><StdButton onClick={() => this.generatePDF()}>Archive Project</StdButton></div>
                                 </div>
                             )
-                        })} */}
+                        })}
                     </DatapageLayout>
                     <div><h1>Pinned Projects</h1></div>
                     <ViewManagement
@@ -417,7 +420,7 @@ class ViewManagement extends React.Component {
                                     {this.props.children ?
                                         this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)] :
                                         ""}
-                                    <StdButton onClick={() => this.generatePDF()}>Generate PDF</StdButton>
+                                    {/* <StdButton onClick={() => this.generatePDF()}>Generate PDF</StdButton> */}
                                 </ExpandableRow>
                             })}
                     </ListTable>
