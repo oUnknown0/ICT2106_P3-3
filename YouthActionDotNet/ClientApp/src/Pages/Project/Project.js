@@ -166,7 +166,7 @@ export default class Project extends React.Component {
 
     update = async (data) => {
         console.log(data);
-        return fetch(this.settings.api + "UpdateAndFetch/" + data.UserId, {
+        return fetch(this.settings.api + "UpdateAndFetch/" + data.ProjectId, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -206,6 +206,38 @@ export default class Project extends React.Component {
         });
     };
     //------------------------------------------------TO BE UPDATED---------------------------------------//
+    updateStatusToPinned = async (data) => {
+        console.log(data);
+        return fetch(this.settings.api + "UpdateStatusToPinned/" + data.ProjectId, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }).then(async (res) => {
+            return res.json();
+        });
+    };
+
+    handleUpdateStatusToPinned = async (data) => {
+        console.log("Data: " + data);
+        await this.updateStatusToPinned(data).then((content) => {
+            if (content.success) {
+                console.log("Pin success");
+                this.setState({
+                    error: "",
+                });
+                return true;
+            } else {
+                console.log("Pin fail");
+                this.setState({
+                    error: content.message,
+                });
+                return false;
+            }
+        });
+    };
+
     requestPinned = async () => {
         this.setState({
             loading: true,
@@ -264,7 +296,8 @@ export default class Project extends React.Component {
                                         settings={this.settings}
                                         perms={this.state.perms}
                                         requestRefresh={this.requestArchived}
-                                        updateHandle={this.props.updateHandle}
+                                        updateHandle={this.handleUpdate}
+                                        // updateHandle={this.props.updateHandle}
                                         headers={this.state.settings.data.ColumnSettings}
                                         fieldSettings={this.state.settings.data.FieldSettings}
                                         setExpansionContent={this.props.setExpansionContent}
@@ -322,10 +355,11 @@ export default class Project extends React.Component {
                         ]}
                     >
                         {this.state.content.data.map((item, index) => {
+                            console.log("Content: "+item + " "+index);
                             return (
                                 <div>
                                     <br></br>
-                                    <div><StdButton onClick={() => this.generatePDF()}>Pin Project</StdButton></div>
+                                    <div><StdButton onClick={() => this.handleUpdateStatusToPinned(item)}>Pin Project</StdButton></div>
                                     <br></br>
                                     <div><StdButton onClick={() => this.generatePDF()}>Archive Project</StdButton></div>
                                 </div>
@@ -337,7 +371,8 @@ export default class Project extends React.Component {
                         settings={this.settings}
                         perms={this.state.perms}
                         requestRefresh={this.requestArchived}
-                        updateHandle={this.props.updateHandle}
+                        updateHandle={this.handleUpdate}
+                        // updateHandle={this.props.updateHandle}
                         headers={this.state.settings.data.ColumnSettings}
                         fieldSettings={this.state.settings.data.FieldSettings}
                         setExpansionContent={this.props.setExpansionContent}
