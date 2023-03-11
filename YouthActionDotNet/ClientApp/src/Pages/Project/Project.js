@@ -377,7 +377,21 @@ handleUpdateStatusToInProgress = async (data) => {
                                         data={this.state.archived.data}
                                         requestError={this.requestError}
                                         api={this.settings.api}
-                                    ></ViewManagement>
+                                    >
+
+                            {this.state.archived.data.map((item, index) => {
+                            console.log("Content: "+item + " "+index);
+                            return (
+                                <div>
+                                    <br></br>
+                                    <div><StdButton onClick={() => this.handleUpdateStatusToInProgress(item)}>Unarchive Project</StdButton></div>
+                                    <br></br>
+                                    <div><StdButton onClick={() => this.handleUpdateStatusToPinned(item)}>Pin Project</StdButton></div>
+                                </div>
+                            )
+                        })}
+
+                                    </ViewManagement>
                                 ),
                             },
                             {
