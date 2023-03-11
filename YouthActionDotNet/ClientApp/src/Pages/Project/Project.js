@@ -206,6 +206,7 @@ export default class Project extends React.Component {
         });
     };
     //------------------------------------------------TO BE UPDATED---------------------------------------//
+    //pin
     updateStatusToPinned = async (data) => {
         console.log(data);
         return fetch(this.settings.api + "UpdateStatusToPinned/" + data.ProjectId, {
@@ -218,7 +219,7 @@ export default class Project extends React.Component {
             return res.json();
         });
     };
-
+//pin
     handleUpdateStatusToPinned = async (data) => {
         console.log("Data: " + data);
         await this.updateStatusToPinned(data).then((content) => {
@@ -237,6 +238,44 @@ export default class Project extends React.Component {
             }
         });
     };
+
+
+
+//archive
+    updateStatusToArchive = async (data) => {
+        console.log(data);
+        return fetch(this.settings.api + "UpdateStatusToArchive/" + data.ProjectId, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }).then(async (res) => {
+            return res.json();
+        });
+    };
+
+    //archive
+    handleUpdateStatusToArchive = async (data) => {
+        console.log("Data: " + data);
+        await this.updateStatusToArchive(data).then((content) => {
+            if (content.success) {
+                console.log("Archive success");
+                this.setState({
+                    error: "",
+                });
+                return true;
+            } else {
+                console.log("Archive fail");
+                this.setState({
+                    error: content.message,
+                });
+                return false;
+            }
+        });
+    };
+
+
 
     requestPinned = async () => {
         this.setState({
@@ -361,7 +400,7 @@ export default class Project extends React.Component {
                                     <br></br>
                                     <div><StdButton onClick={() => this.handleUpdateStatusToPinned(item)}>Pin Project</StdButton></div>
                                     <br></br>
-                                    <div><StdButton onClick={() => this.generatePDF()}>Archive Project</StdButton></div>
+                                    <div><StdButton onClick={() => this.handleUpdateStatusToArchive(item)}>Archive Project</StdButton></div>
                                 </div>
                             )
                         })}

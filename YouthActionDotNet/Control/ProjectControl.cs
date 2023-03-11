@@ -119,6 +119,31 @@ namespace YouthActionDotNet.Control
                 }
             }
         }
+
+public async Task<ActionResult<string>> UpdateStatusToArchive(string id, Project template)
+        {
+            if (id != template.ProjectId)
+            {
+                return JsonConvert.SerializeObject(new { success = false, data = "", message = "Project Id Mismatch" });
+            }
+            await ProjectsRepositoryIn.UpdateStatusToArchive(template);
+            try
+            {
+                return JsonConvert.SerializeObject(new { success = true, data = template, message = "Project Successfully Updated" });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!Exists(id))
+                {
+                    return JsonConvert.SerializeObject(new { success = false, data = "", message = "Project Not Found" });
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
         //------------------------------------------------------TO BE UPDATED---------------------------------------------------//
         public async Task<ActionResult<string>> Update(string id, Project template)
         {

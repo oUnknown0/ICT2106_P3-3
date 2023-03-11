@@ -46,5 +46,23 @@ namespace YouthActionDotNet.DAL
                 return false;
             }
         }
+         public virtual async Task<bool> UpdateStatusToArchive(Project entityToUpdate)
+        {
+            try
+            {
+                dbSet.Attach(entityToUpdate);
+                entityToUpdate.ProjectStatus = "Archived";
+                context.Entry(entityToUpdate).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
     }
 }

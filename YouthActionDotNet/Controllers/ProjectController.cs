@@ -68,11 +68,20 @@ namespace YouthActionDotNet.Controllers
             Console.WriteLine("GetProjectArchived");
             return await projectControl.GetProjectArchived();
         }
+        
         [HttpPut("UpdateStatusToPinned/{id}")]
         public async Task<ActionResult<string>> UpdateStatusToPinned(string id, Project template)
         {
             return await projectControl.UpdateStatusToPinned(id, template);
         }
+
+
+        [HttpPut("UpdateStatusToArchive/{id}")]
+        public async Task<ActionResult<string>> UpdateStatusToArchive(string id, Project template)
+        {
+            return await projectControl.UpdateStatusToArchive(id, template);
+        }
+
         //---------------------------------------------TO BE UPDATED----------------------------------//
         [HttpPut("{id}")]
         public async Task<ActionResult<string>> Update(string id, Project template)
