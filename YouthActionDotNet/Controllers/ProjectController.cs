@@ -82,6 +82,15 @@ namespace YouthActionDotNet.Controllers
             return await projectControl.UpdateStatusToArchive(id, template);
         }
 
+
+        [HttpPut("UpdateStatusToInProgress/{id}")]
+        public async Task<ActionResult<string>> UpdateStatusToInProgress(string id, Project template)
+        {
+            return await projectControl.UpdateStatusToInProgress(id, template);
+        }
+
+
+
         //---------------------------------------------TO BE UPDATED----------------------------------//
         [HttpPut("{id}")]
         public async Task<ActionResult<string>> Update(string id, Project template)

@@ -276,6 +276,40 @@ export default class Project extends React.Component {
     };
 
 
+//update to in progress
+updateStatusToInProgress = async (data) => {
+    console.log(data);
+    return fetch(this.settings.api + "UpdateStatusToInProgress/" + data.ProjectId, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    }).then(async (res) => {
+        return res.json();
+    });
+};
+
+//update to in progress
+handleUpdateStatusToInProgress = async (data) => {
+    console.log("Data: " + data);
+    await this.updateStatusToInProgress(data).then((content) => {
+        if (content.success) {
+            console.log("Unpin success");
+            this.setState({
+                error: "",
+            });
+            return true;
+        } else {
+            console.log("Unpin fail");
+            this.setState({
+                error: content.message,
+            });
+            return false;
+        }
+    });
+};
+
 
     requestPinned = async () => {
         this.setState({
@@ -418,6 +452,18 @@ export default class Project extends React.Component {
                         data={this.state.pinned.data}
                         requestError={this.requestError}
                         api={this.settings.api}>
+
+                             {this.state.pinned.data.map((item, index) => {
+                            console.log("Content: "+ item  + " "+ index);
+                            return (
+                                <div>
+                                    <br></br>
+                                    <div><StdButton onClick={() => this.handleUpdateStatusToInProgress(item)}>Unpin Project</StdButton></div>
+                                    <br></br>
+                                    <div><StdButton onClick={() => this.handleUpdateStatusToArchive(item)}>Archive Project</StdButton></div>
+                                </div>
+                            )
+                        })}
                     </ViewManagement>
                 </div>
             );
