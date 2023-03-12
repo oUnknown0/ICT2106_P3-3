@@ -25,8 +25,8 @@ import "../../styles/Report.scss";
 export default class Project extends React.Component {
     state = {
         content: null,
-        pinned:null,
-        archived:null,
+        pinned: null,
+        archived: null,
         headers: [],
         loading: true,
         settings: {},
@@ -45,13 +45,13 @@ export default class Project extends React.Component {
     async componentDidMount() {
         const perms = await this.props.permissions.find(p => p.Module === "Project");
         const reformattedPerms = [];
-        Object.keys(perms).forEach((perm)=>{
-            return perm === "Module" ? null : 
+        Object.keys(perms).forEach((perm) => {
+            return perm === "Module" ? null :
                 perms[perm] === true ? reformattedPerms.push(perm) : null
         });
         this.setState({
             data: this.props.data,
-            perms : perms,
+            perms: perms,
         })
 
         await this.getContent().then((content) => {
@@ -123,7 +123,7 @@ export default class Project extends React.Component {
             return res.json();
         });
     };
-
+    //-------------------------------------------TO BE UPDATED---------------------------------------//
     getPinned = async () => {
         return fetch(this.settings.api + "GetProjectPinned", {
             method: "GET",
@@ -149,8 +149,8 @@ export default class Project extends React.Component {
             return res.json();
         });
     };
-
-
+     //-------------------------------------------TO BE UPDATED---------------------------------------//
+     
     // getByProjectTag = async () => {
     //     var loggedInVol = this.props.user.data;
     //     console.log(loggedInVol.UserId);
@@ -219,7 +219,7 @@ export default class Project extends React.Component {
             return res.json();
         });
     };
-//pin
+    //pin
     handleUpdateStatusToPinned = async (data) => {
         console.log("Data: " + data);
         await this.updateStatusToPinned(data).then((content) => {
@@ -241,7 +241,7 @@ export default class Project extends React.Component {
 
 
 
-//archive
+    //archive
     updateStatusToArchive = async (data) => {
         console.log(data);
         return fetch(this.settings.api + "UpdateStatusToArchive/" + data.ProjectId, {
@@ -276,39 +276,39 @@ export default class Project extends React.Component {
     };
 
 
-//update to in progress
-updateStatusToInProgress = async (data) => {
-    console.log(data);
-    return fetch(this.settings.api + "UpdateStatusToInProgress/" + data.ProjectId, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    }).then(async (res) => {
-        return res.json();
-    });
-};
+    //update to in progress
+    updateStatusToInProgress = async (data) => {
+        console.log(data);
+        return fetch(this.settings.api + "UpdateStatusToInProgress/" + data.ProjectId, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }).then(async (res) => {
+            return res.json();
+        });
+    };
 
-//update to in progress
-handleUpdateStatusToInProgress = async (data) => {
-    console.log("Data: " + data);
-    await this.updateStatusToInProgress(data).then((content) => {
-        if (content.success) {
-            console.log("Unpin success");
-            this.setState({
-                error: "",
-            });
-            return true;
-        } else {
-            console.log("Unpin fail");
-            this.setState({
-                error: content.message,
-            });
-            return false;
-        }
-    });
-};
+    //update to in progress
+    handleUpdateStatusToInProgress = async (data) => {
+        console.log("Data: " + data);
+        await this.updateStatusToInProgress(data).then((content) => {
+            if (content.success) {
+                console.log("Unpin success");
+                this.setState({
+                    error: "",
+                });
+                return true;
+            } else {
+                console.log("Unpin fail");
+                this.setState({
+                    error: content.message,
+                });
+                return false;
+            }
+        });
+    };
 
 
     requestPinned = async () => {
@@ -343,7 +343,7 @@ handleUpdateStatusToInProgress = async (data) => {
     };
 
     render() {
-        console.log("Perms project top "+this.state.perms) //check perms
+        console.log("Perms project top " + this.state.perms) //check perms
         if (this.state.loading) {
             return <Loading></Loading>;
         } else {
@@ -379,17 +379,17 @@ handleUpdateStatusToInProgress = async (data) => {
                                         api={this.settings.api}
                                     >
 
-                            {this.state.archived.data.map((item, index) => {
-                            console.log("Content: "+item + " "+index);
-                            return (
-                                <div>
-                                    <br></br>
-                                    <div><StdButton onClick={() => this.handleUpdateStatusToInProgress(item)}>Unarchive Project</StdButton></div>
-                                    <br></br>
-                                    <div><StdButton onClick={() => this.handleUpdateStatusToPinned(item)}>Pin Project</StdButton></div>
-                                </div>
-                            )
-                        })}
+                                        {this.state.archived.data.map((item, index) => {
+                                            console.log("Content: " + item + " " + index);
+                                            return (
+                                                <div>
+                                                    <br></br>
+                                                    <div><StdButton onClick={() => this.handleUpdateStatusToInProgress(item)}>Unarchive Project</StdButton></div>
+                                                    <br></br>
+                                                    <div><StdButton onClick={() => this.handleUpdateStatusToPinned(item)}>Pin Project</StdButton></div>
+                                                </div>
+                                            )
+                                        })}
 
                                     </ViewManagement>
                                 ),
@@ -442,7 +442,7 @@ handleUpdateStatusToInProgress = async (data) => {
                         ]}
                     >
                         {this.state.content.data.map((item, index) => {
-                            console.log("Content: "+item + " "+index);
+                            console.log("Content: " + item + " " + index);
                             return (
                                 <div>
                                     <br></br>
@@ -452,8 +452,37 @@ handleUpdateStatusToInProgress = async (data) => {
                                 </div>
                             )
                         })}
+                        <section>
+                            <div><h1>Pinned Projects</h1></div>
+                            <ViewManagement
+                                settings={this.settings}
+                                perms={this.state.perms}
+                                requestRefresh={this.requestArchived}
+                                updateHandle={this.handleUpdate}
+                                // updateHandle={this.props.updateHandle}
+                                headers={this.state.settings.data.ColumnSettings}
+                                fieldSettings={this.state.settings.data.FieldSettings}
+                                setExpansionContent={this.props.setExpansionContent}
+                                data={this.state.pinned.data}
+                                requestError={this.requestError}
+                                api={this.settings.api}>
+
+                                {this.state.pinned.data.map((item, index) => {
+                                    console.log("Content: " + item + " " + index);
+                                    return (
+                                        <div>
+                                            <br></br>
+                                            <div><StdButton onClick={() => this.handleUpdateStatusToInProgress(item)}>Unpin Project</StdButton></div>
+                                            <br></br>
+                                            <div><StdButton onClick={() => this.handleUpdateStatusToArchive(item)}>Archive Project</StdButton></div>
+                                        </div>
+                                    )
+                                })}
+                            </ViewManagement>
+                            <br></br>
+                        </section>
                     </DatapageLayout>
-                    <div><h1>Pinned Projects</h1></div>
+                    {/* <div><h1>Pinned Projects</h1></div>
                     <ViewManagement
                         settings={this.settings}
                         perms={this.state.perms}
@@ -467,8 +496,8 @@ handleUpdateStatusToInProgress = async (data) => {
                         requestError={this.requestError}
                         api={this.settings.api}>
 
-                             {this.state.pinned.data.map((item, index) => {
-                            console.log("Content: "+ item  + " "+ index);
+                        {this.state.pinned.data.map((item, index) => {
+                            console.log("Content: " + item + " " + index);
                             return (
                                 <div>
                                     <br></br>
@@ -478,7 +507,7 @@ handleUpdateStatusToInProgress = async (data) => {
                                 </div>
                             )
                         })}
-                    </ViewManagement>
+                    </ViewManagement> */}
                 </div>
             );
         }
@@ -499,7 +528,7 @@ class ViewManagement extends React.Component {
     };
 
     componentDidMount() {
-        
+
         // let columns = [];
         // for(var i = 0; i < Object.keys(this.props.fieldSettings).length; i++){
         //     columns.push(
@@ -523,7 +552,7 @@ class ViewManagement extends React.Component {
             indexOfFirstItem,
             indexOfLastItem
         );
-        console.log("Perms project bot "+this.props.perms) //check perms
+        console.log("Perms project bot " + this.props.perms) //check perms
         console.log("First and last: " + indexOfFirstItem + indexOfLastItem);
         return (
             <div>
@@ -537,19 +566,19 @@ class ViewManagement extends React.Component {
                         {this.state.data &&
                             currentItems.map((row, index) => {
                                 return <ExpandableRow
-                                    updateHandle={this.props.updateHandle} 
-                                    values={row} 
-                                    fieldSettings={this.props.fieldSettings} 
-                                    key={index} 
-                                    settings={this.settings} 
-                                    headers={this.props.headers} 
-                                    setExpansionContent={this.setExpansionContent} 
-                                    handleSeeMore={this.handleSeeMore} 
-                                    handleClose={this.handleClose} 
+                                    updateHandle={this.props.updateHandle}
+                                    values={row}
+                                    fieldSettings={this.props.fieldSettings}
+                                    key={index}
+                                    settings={this.settings}
+                                    headers={this.props.headers}
+                                    setExpansionContent={this.setExpansionContent}
+                                    handleSeeMore={this.handleSeeMore}
+                                    handleClose={this.handleClose}
                                     hasFields={this.props.hasFields}
                                     popUpContent={this.state.popUpContent}
                                     perms={this.props.perms}
-                                    >
+                                >
                                     <br></br><button color="red">Unpin Project</button><br></br><br></br>Export to:<FaFileWord size={30} /><FaFilePdf size={30} /><FaFileCsv size={30} />
                                     {this.props.children ?
                                         this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)] :

@@ -237,6 +237,10 @@ export default class DatapageLayout extends React.Component {
                     ></TableHeader>
                     <TableFooter settings={this.props.settings} toggle={this.drawerToggleClickHandler} showBottomMenu={this.state.showBottomMenu}></TableFooter>
                     <DivSpacing spacing={1}></DivSpacing>
+                    {React.Children.toArray(this.props.children).filter(child => {
+                        // return true to keep the child or false to filter it out
+                        return child.type === 'section';
+                    })}
                     <div className="d-flex justify-content-center align-items-start flex-fill">
                         <ListTable settings={this.settings}>
                             <HeaderRow>
