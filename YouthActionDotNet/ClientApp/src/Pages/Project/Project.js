@@ -441,17 +441,6 @@ export default class Project extends React.Component {
                             },
                         ]}
                     >
-                        {this.state.content.data.map((item, index) => {
-                            console.log("Content: " + item + " " + index);
-                            return (
-                                <div className="project-table">
-                                    <br></br>
-                                    <div><StdButton onClick={() => this.handleUpdateStatusToPinned(item)}>Pin Project</StdButton></div>
-                                    <br></br>
-                                    <div><StdButton onClick={() => this.handleUpdateStatusToArchive(item)}>Archive Project</StdButton></div>
-                                </div>
-                            )
-                        })}
                         <section id="Pinned">
                             <div><h1>Pinned Projects</h1></div>
                             <ViewManagement
@@ -480,34 +469,20 @@ export default class Project extends React.Component {
                                 })}
                             </ViewManagement>
                             <br></br>
+                            <div><h1>Projects</h1></div>
                         </section>
-                    </DatapageLayout>
-                    {/* <div><h1>Pinned Projects</h1></div>
-                    <ViewManagement
-                        settings={this.settings}
-                        perms={this.state.perms}
-                        requestRefresh={this.requestArchived}
-                        updateHandle={this.handleUpdate}
-                        // updateHandle={this.props.updateHandle}
-                        headers={this.state.settings.data.ColumnSettings}
-                        fieldSettings={this.state.settings.data.FieldSettings}
-                        setExpansionContent={this.props.setExpansionContent}
-                        data={this.state.pinned.data}
-                        requestError={this.requestError}
-                        api={this.settings.api}>
-
-                        {this.state.pinned.data.map((item, index) => {
+                        {this.state.content.data.map((item, index) => {
                             console.log("Content: " + item + " " + index);
                             return (
-                                <div>
+                                <div className="project-table">
                                     <br></br>
-                                    <div><StdButton onClick={() => this.handleUpdateStatusToInProgress(item)}>Unpin Project</StdButton></div>
+                                    <div><StdButton onClick={() => this.handleUpdateStatusToPinned(item)}>Pin Project</StdButton></div>
                                     <br></br>
                                     <div><StdButton onClick={() => this.handleUpdateStatusToArchive(item)}>Archive Project</StdButton></div>
                                 </div>
                             )
                         })}
-                    </ViewManagement> */}
+                    </DatapageLayout>
                 </div>
             );
         }

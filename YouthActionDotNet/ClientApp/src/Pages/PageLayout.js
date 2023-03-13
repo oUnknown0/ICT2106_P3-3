@@ -271,23 +271,19 @@ export default class DatapageLayout extends React.Component {
                                     {console.log("this.props.children 1: "+this.props.children)}
                                     {console.log("this.props.children count: "+React.Children.count(this.props.children))} */}
 
-                                    {React.Children.toArray(this.props.children? 
-                                        this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
-                                        "").filter(child => {
-                                            // return true to keep the child or false to filter it out
-                                            if (child.type === 'section') {
-                                                return false; // ignore child with section
-                                            }
-                                            // const itemIndex = (index + ((this.state.currentPage - 1) * this.state.itemsPerPage));
-                                            console.log("Items per page 2: "+(index + ((this.state.currentPage - 1) * this.state.itemsPerPage)))
-                                            console.log("this.props.children 2: "+this.props.children)
-                                            console.log("this.props.children count: "+React.Children.count(this.props.children))
-                                            return (
-                                                this.props.children? 
-                                                this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
-                                                ""
-                                            );
-                                    })}
+                                    {this.props.children? 
+                                    React.Children.toArray(this.props.children).filter(child => {
+                                        if (child.type === 'section') {
+                                            return false; // ignore child with section
+                                        }
+                                        return true;
+                                    }).map((child, index) => {
+                                        return React.cloneElement(child, {
+                                            key: index + ((this.state.currentPage - 1) * this.state.itemsPerPage)
+                                        });
+                                    })[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
+                                    ""}
+                                    {console.log("Items per page 1:"+(index + ((this.state.currentPage - 1) * this.state.itemsPerPage)))}
                                 </ExpandableRow>
                             })}
                         </ListTable>
