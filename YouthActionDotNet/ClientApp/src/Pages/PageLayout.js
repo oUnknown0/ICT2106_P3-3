@@ -239,7 +239,7 @@ export default class DatapageLayout extends React.Component {
                     <DivSpacing spacing={1}></DivSpacing>
                     {React.Children.toArray(this.props.children).filter(child => {
                         // return true to keep the child or false to filter it out
-                        return child.type === 'section';
+                        return child.props.id === 'Pinned';
                     })}
                     <div className="d-flex justify-content-center align-items-start flex-fill">
                         <ListTable settings={this.settings}>
@@ -264,9 +264,30 @@ export default class DatapageLayout extends React.Component {
                                 hasFields={this.props.hasFields}
                                 popUpContent={this.state.popUpContent}
                                 perms={this.state.perms}>
-                                    {this.props.children? 
+                                    {/* {this.props.children? 
                                     this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
                                     ""}
+                                    {console.log("Items per page 1:"+(index + ((this.state.currentPage - 1) * this.state.itemsPerPage)))}
+                                    {console.log("this.props.children 1: "+this.props.children)}
+                                    {console.log("this.props.children count: "+React.Children.count(this.props.children))} */}
+
+                                    {React.Children.toArray(this.props.children? 
+                                        this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
+                                        "").filter(child => {
+                                            // return true to keep the child or false to filter it out
+                                            if (child.type === 'section') {
+                                                return false; // ignore child with section
+                                            }
+                                            // const itemIndex = (index + ((this.state.currentPage - 1) * this.state.itemsPerPage));
+                                            console.log("Items per page 2: "+(index + ((this.state.currentPage - 1) * this.state.itemsPerPage)))
+                                            console.log("this.props.children 2: "+this.props.children)
+                                            console.log("this.props.children count: "+React.Children.count(this.props.children))
+                                            return (
+                                                this.props.children? 
+                                                this.props.children[index + ((this.state.currentPage - 1) * this.state.itemsPerPage)]: 
+                                                ""
+                                            );
+                                    })}
                                 </ExpandableRow>
                             })}
                         </ListTable>

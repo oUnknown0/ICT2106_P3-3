@@ -444,7 +444,7 @@ export default class Project extends React.Component {
                         {this.state.content.data.map((item, index) => {
                             console.log("Content: " + item + " " + index);
                             return (
-                                <div>
+                                <div className="project-table">
                                     <br></br>
                                     <div><StdButton onClick={() => this.handleUpdateStatusToPinned(item)}>Pin Project</StdButton></div>
                                     <br></br>
@@ -452,12 +452,12 @@ export default class Project extends React.Component {
                                 </div>
                             )
                         })}
-                        <section>
+                        <section id="Pinned">
                             <div><h1>Pinned Projects</h1></div>
                             <ViewManagement
                                 settings={this.settings}
                                 perms={this.state.perms}
-                                requestRefresh={this.requestArchived}
+                                requestRefresh={this.requestPinned}
                                 updateHandle={this.handleUpdate}
                                 // updateHandle={this.props.updateHandle}
                                 headers={this.state.settings.data.ColumnSettings}
@@ -468,7 +468,7 @@ export default class Project extends React.Component {
                                 api={this.settings.api}>
 
                                 {this.state.pinned.data.map((item, index) => {
-                                    console.log("Content: " + item + " " + index);
+                                    console.log("Content pinned: " + item + " " + index);
                                     return (
                                         <div>
                                             <br></br>
