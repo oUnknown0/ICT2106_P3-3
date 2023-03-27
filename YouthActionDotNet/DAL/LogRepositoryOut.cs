@@ -1,28 +1,33 @@
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using YouthActionDotNet.Data;
 using YouthActionDotNet.Models;
 
-namespace YouthActionDotNet.DAL {
+namespace YouthActionDotNet.DAL
+{
 
     public class LogRepositoryOut: GenericRepositoryOut<Logs> {
 
-        public LogRepositoryOut(DBContext context): base(context) {
+        public LogRepositoryOut(DbContext context) : base(context)
+        {
             this.context = context;
             this.dbSet = context.Set<Logs>();
         }
 
-        // public Task<Logs> getLogsByUser(string user) {
-        //     return dbSet.FirstOrDefaultAsync(p => p.logUserName == user);
-        // }
+        public async Task<List<Logs>> GetLogsByUser(string user) {
+            var log = await dbSet.Where(p => p.logUserName == user).ToListAsync();
+            if (log == null)
+            {
+                return null;
+            }
+            return log;
+        }
 
-        // public List<Logs> getAllLogs() {
-        //     return dbSet.Where(p => )
-        // }
-
+        public async Task<List<Logs>> getAllLogsByProject(Project project)
+        {
+            return await dbSet.Where(l => l.project == project).ToListAsync();
+        }
     }
 }
