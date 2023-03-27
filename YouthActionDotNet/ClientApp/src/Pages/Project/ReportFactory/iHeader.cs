@@ -1,3 +1,3 @@
 public interface iHeader {
-   void setText();
+   public void setText();
 }
