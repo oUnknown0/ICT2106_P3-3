@@ -761,7 +761,7 @@ class ViewManagement extends React.Component {
     //     columns: columns
     // });
   }
-
+  //this is the function that is called when the user clicks on the row
   render() {
     if (this.state.content === "") {
       return <div></div>;
