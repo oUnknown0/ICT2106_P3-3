@@ -8,9 +8,9 @@ using YouthActionDotNet.Models;
 
 namespace YouthActionDotNet.DAL
 {
-    public class IReportRepoOut : GenericRepositoryOut<Project>
+    public class ProgressReportRepositoryOut : GenericRepositoryOut<Project>
     {   
-        public IReportRepoOut(DBContext context) : base(context)
+        public ProgressReportRepositoryOut(DBContext context) : base(context)
         {
             this.context = context;
             this.dbSet = context.Set<Project>();
